@@ -357,8 +357,40 @@ def collect(args) -> None:
         if src.exists():
             with src.open("rb") as fi, gzip.open(out / f"{name}.json.gz", "wb") as fo:
                 shutil.copyfileobj(fi, fo)
+    unrelated_diag(fake, out)
     print_status(results)
     print(f"wrote {out}/hard_review.md ({len(decisions)} problems), summary.json")
+
+
+def unrelated_diag(fake: bool, out: Path) -> None:
+    """Why did word tasks miss the 30-70% band? Pass-rate histogram per task and level, plus a
+    few sampled answers next to the gold (from the raw outputs). Small enough to harvest."""
+    scr = config.DATA / ("fake_screening" if fake else "screening") / "unrelated_candidates.json"
+    cands = load_json(scr)
+    if not cands:
+        return
+    by_id = {c["id"]: c for c in cands}
+    groups = {}
+    for c in cands:
+        g = groups.setdefault(f"{c['task']} L{c['level']} {json.dumps(c['config'])}",
+                              {"n": 0, "c_of_16": Counter()})
+        g["n"] += 1
+        g["c_of_16"][c.get("c_set1", -1)] += 1
+    for g in groups.values():
+        g["c_of_16"] = dict(sorted(g["c_of_16"].items()))
+    samples = {}
+    for path in sorted((config.RAW_OUTPUTS / "unrelated" / "round1").glob("chunk_*.jsonl.gz")):
+        with gzip.open(path, "rt") as f:
+            for line in f:
+                r = json.loads(line)
+                c = by_id.get(r["id"])
+                if not c or len(samples.setdefault(c["task"], [])) >= 4 or r["attempt"] % 8:
+                    continue
+                samples[c["task"]].append({
+                    "id": r["id"], "correct": r["correct"], "truncated": r["truncated"],
+                    "tokens": r["tokens"], "extracted": r["answer"], "gold": c["entry"]["answer"],
+                    "question_tail": c["entry"]["question"][-200:], "response_tail": r["text"][-400:]})
+    save_json(out / "unrelated_diag.json", {"groups": groups, "samples": samples})
 
 
 def freeze(args) -> None:
