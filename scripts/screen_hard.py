@@ -227,6 +227,17 @@ def work(args) -> None:
     w["finished"] = None
     target = args.target or config.HARD_TARGET
 
+    # A requeued worker with nothing left to do exits before it loads the model (and holds the GPU).
+    results = load_results(base)
+    open_mine = [cid for cid in claims_of(base, me) if results.get(cid, {}).get("status") not in DONE]
+    q = sum(p["status"] == "qualified" for p in results.values())
+    if not open_mine and q >= target:
+        w["finished"] = f"target reached ({q} qualified), checked before loading the model"
+        w["updated"] = time.time()
+        save_json(wpath, w)
+        print(f"[{me}] stopped: {w['finished']}", flush=True)
+        return
+
     with get_runner(args.runner) as runner:
         reason = None
         while reason is None:
