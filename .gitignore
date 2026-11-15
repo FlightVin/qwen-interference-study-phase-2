@@ -1,0 +1,5 @@
+# Environments and datasets never go in git; on Babel they live on compute storage under an arnav/ directory.
+venv/
+data/
+__pycache__/
+*.pyc
