@@ -12,6 +12,9 @@ PY=$PROJ_DATA/envs/ri-v1/bin/python
 [ -f "$PROJ_DATA/.env-ready" ] || { echo "environment not ready: experiment drl-env must finish first" >&2; exit 2; }
 
 export PYTHONPATH=$REPO RI_DATA=$PROJ_DATA/data HF_HOME=$PROJ_DATA/hf HF_HUB_OFFLINE=1
+# The environment's tools (ninja, etc.) on PATH, and vLLM's PyTorch sampler (no JIT build on the
+# node; ri/engine.py sets the same default). See IMPLEMENTATION-LOG 2026-11-15 15:50.
+export PATH=$PROJ_DATA/envs/ri-v1/bin:$PATH VLLM_USE_FLASHINFER_SAMPLER=0
 # Compile caches go to node-local /tmp: six workers must not share one cache on NFS.
 SCR=/tmp/arnav-drl-${SLURM_JOB_ID:-local}
 export VLLM_CACHE_ROOT=$SCR/vllm TRITON_CACHE_DIR=$SCR/triton TORCHINDUCTOR_CACHE_DIR=$SCR/inductor XDG_CACHE_HOME=$SCR/xdg

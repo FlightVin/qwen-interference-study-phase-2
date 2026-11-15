@@ -13,6 +13,11 @@ import time
 
 from ri import config
 
+# Use vLLM's PyTorch sampler. FlashInfer's sampler compiles CUDA kernels on first use (it needs
+# ninja and nvcc on the node); on Babel that crashed both workers on 2026-11-15. With
+# temperature 1.0 and no top-k/top-p cut, both samplers draw from the same distribution.
+os.environ.setdefault("VLLM_USE_FLASHINFER_SAMPLER", "0")
+
 
 class Engine:
     def __init__(self, raw_root: str, grade_workers: int):
