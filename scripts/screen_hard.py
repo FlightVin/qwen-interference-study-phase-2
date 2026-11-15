@@ -265,6 +265,10 @@ def work(args) -> None:
             runner.stats["load_s"] = 0
             w["updated"] = time.time()
             save_json(wpath, w)
+            now = load_results(base)  # one parseable line per batch, read by the progress watcher
+            print(f"[{me}] PROGRESS qualified={sum(p['status'] == 'qualified' for p in now.values())}"
+                  f"/{target} finished={sum(p['status'] in DONE for p in now.values())}"
+                  f" candidates={len(cands)} my_batches={w['batches']}", flush=True)
         w["finished"] = reason
         w["updated"] = time.time()
         save_json(wpath, w)
