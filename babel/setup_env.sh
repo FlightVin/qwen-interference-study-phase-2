@@ -29,7 +29,9 @@ fi
 mkdir -p "$TOOLS" "$PROJ_DATA/envs" "$RI_DATA" "$HF_HOME" "$UV_CACHE_DIR" "$XDG_CACHE_HOME"
 
 # 1. uv, as a pinned standalone binary (no system Python needed).
-if [ ! -x "$TOOLS/uv" ]; then
+#    Re-download unless the binary runs: a cancelled job can leave a truncated file behind.
+if ! "$TOOLS/uv" --version >/dev/null 2>&1; then
+    rm -f "$TOOLS/uv" "$TOOLS/uvx"
     curl -LsSf "https://github.com/astral-sh/uv/releases/download/$UV_VERSION/uv-x86_64-unknown-linux-gnu.tar.gz" \
         | tar -xz -C "$TOOLS" --strip-components=1
 fi
