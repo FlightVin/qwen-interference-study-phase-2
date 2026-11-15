@@ -6,7 +6,7 @@ attempts. We keep the shortest prefix with 5-11 correct (30-70%); if none lands 
 closest to 8 of 16, flagged out_of_band. A second set of 16 attempts on the kept prefix feeds the
 gradient check.
 
-Usage: python scripts/build_guided.py [--fake]     (needs data/final/hard_train.json)
+Usage: python scripts/build_guided.py [--runner local|modal|fake]     (needs data/final/hard_train.json)
 Output: data/final/companion_guided.json
 """
 
@@ -18,14 +18,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from ri import config  # noqa: E402
 from ri.metrics import summarize  # noqa: E402
 from ri.prompts import guided_prompt  # noqa: E402
-from ri.runner import FakeRunner, ModalRunner, seed_for  # noqa: E402
+from ri.runner import get_runner, seed_for  # noqa: E402
 from ri.guidance import prefixes  # noqa: E402
 from ri.store import load_json, save_json, write_dataset  # noqa: E402
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--fake", action="store_true")
+    ap.add_argument("--runner", default="local", choices=["local", "modal", "fake"])
+    ap.add_argument("--fake", action="store_true", help="same as --runner fake")
     args = ap.parse_args()
+    args.fake = args.fake or args.runner == "fake"
     final_dir = config.DATA / "fake_final" if args.fake else config.FINAL
     hard = load_json(final_dir / "hard_train.json")
     if not hard:
@@ -40,7 +42,7 @@ def main():
 
     lo, hi = config.COMPANION_BAND
     spend = 0.0
-    with (FakeRunner() if args.fake else ModalRunner()) as runner:
+    with get_runner("fake" if args.fake else args.runner) as runner:
         items = [{"id": c["id"], "prompt": c["prompt"], "grader": {"type": "math", "gold": c["answer"]},
                   "n": config.COMPANION_ATTEMPTS, "seed": seed_for(c["id"], "guided-set1")} for c in cands]
         res1, cost = runner.sample(items, tag="guided/set1", return_texts="none", save_token_ids=True)

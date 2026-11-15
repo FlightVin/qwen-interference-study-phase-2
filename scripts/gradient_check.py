@@ -1,6 +1,6 @@
 """Gradient check for companion pools, then the final pick of related and conflicting companions.
 
-compute: on Modal, measure for every companion group (two independent sets of 16 attempts) the
+compute: on the local GPU (Babel job) or Modal, measure for every companion group (two independent sets of 16 attempts) the
          cosine between its GRPO gradient and (a) its own hard problem's direction, (b) the overall
          hard direction. Writes data/screening/gradient_check.json.
 select:  keeps 2 related companions per hard problem whose cosine is positive in both sets (highest
@@ -8,7 +8,7 @@ select:  keeps 2 related companions per hard problem whose cosine is positive in
          companion_related.json and companion_conflicting.json; adds the cosines to the guided and
          unrelated files; checks the pool order conflicting < unrelated < related < guided.
 
-Usage: python scripts/gradient_check.py compute|select
+Usage: python scripts/gradient_check.py compute [--runner local|modal] | select
 """
 
 import argparse
@@ -25,11 +25,7 @@ OUT = config.SCREENING / "gradient_check.json"
 PER_HARD = 2
 
 
-def compute():
-    import modal
-
-    from ri.modal_app import GradChecker, app
-
+def compute(runner: str):
     hard = load_json(config.FINAL / "hard_train.json")["items"]
     groups = []
     for kind in ("related", "conflicting"):
@@ -48,9 +44,19 @@ def compute():
                      "solutions": h["correct_solutions"]} for h in hard],
            "groups": groups}
     print(f"{len(job['hard'])} hard problems, {len(groups)} companion groups")
-    with modal.enable_output(), app.run():
-        res = GradChecker().check.remote(job)
-    res["cost_usd_est"] = round((res["elapsed_s"] + 180) * config.PRICE_PER_SECOND, 2)
+    if runner == "modal":
+        import modal
+
+        from ri.modal_app import GradChecker, app
+
+        with modal.enable_output(), app.run():
+            res = GradChecker().check.remote(job)
+        res["cost_usd_est"] = round((res["elapsed_s"] + 180) * config.PRICE_PER_SECOND, 2)
+    else:  # local: this machine's GPU (a Babel job)
+        from ri.gradcheck import GradCheck
+
+        res = GradCheck().check(job, raw_root=str(config.RAW_OUTPUTS))
+        res["cost_usd_est"] = 0.0
     save_json(OUT, res)
     print(f"wrote {OUT}; {res['elapsed_s'] / 60:.1f} min, est. ${res['cost_usd_est']}")
 
@@ -123,8 +129,9 @@ def select():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("command", choices=["compute", "select"])
+    ap.add_argument("--runner", default="local", choices=["local", "modal"])
     args = ap.parse_args()
-    compute() if args.command == "compute" else select()
+    compute(args.runner) if args.command == "compute" else select()
 
 
 if __name__ == "__main__":

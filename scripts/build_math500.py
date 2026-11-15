@@ -1,6 +1,6 @@
 """Pick the 100-problem MATH-500 check set (20 per level) and record base-model metrics.
 
-Usage: python scripts/build_math500.py [--fake]
+Usage: python scripts/build_math500.py [--runner local|modal|fake]
 Output: data/final/math500_check.json (16 attempts per problem for the baseline)
 """
 
@@ -16,7 +16,7 @@ from ri import config  # noqa: E402
 from ri.grading import gold_parses  # noqa: E402
 from ri.metrics import summarize  # noqa: E402
 from ri.prompts import math_prompt  # noqa: E402
-from ri.runner import FakeRunner, ModalRunner, seed_for  # noqa: E402
+from ri.runner import get_runner, seed_for  # noqa: E402
 from ri.store import write_dataset  # noqa: E402
 
 PER_LEVEL = 20
@@ -25,8 +25,10 @@ ATTEMPTS = 16
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--fake", action="store_true")
+    ap.add_argument("--runner", default="local", choices=["local", "modal", "fake"])
+    ap.add_argument("--fake", action="store_true", help="same as --runner fake")
     args = ap.parse_args()
+    args.fake = args.fake or args.runner == "fake"
 
     digest = hashlib.sha256(config.MATH500_FILE.read_bytes()).hexdigest()
     assert digest == config.MATH500_SHA256, f"MATH-500 file changed: {digest}"
@@ -41,7 +43,7 @@ def main():
     items = [{"id": r["unique_id"], "prompt": math_prompt(r["problem"]),
               "grader": {"type": "math", "gold": r["answer"]}, "n": ATTEMPTS,
               "seed": seed_for(r["unique_id"], "math500-base")} for r in chosen]
-    with (FakeRunner() if args.fake else ModalRunner()) as runner:
+    with get_runner("fake" if args.fake else args.runner) as runner:
         results, cost = runner.sample(items, tag="math500/base", return_texts="none")
 
     out = []

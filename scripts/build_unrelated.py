@@ -6,7 +6,7 @@ Left out: syllogism (Yes/No answers are right half the time by guessing) and sen
 Each task is generated at a few difficulty levels; every candidate gets 16 attempts and must land
 at 5-11 correct. If a task is short, a second round generates more at its most productive level.
 
-Usage: python scripts/build_unrelated.py [--fake]
+Usage: python scripts/build_unrelated.py [--runner local|modal|fake]
 Output: data/final/companion_unrelated.json
 """
 
@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from ri import config  # noqa: E402
 from ri.metrics import summarize  # noqa: E402
 from ri.prompts import word_task_prompt  # noqa: E402
-from ri.runner import FakeRunner, ModalRunner, seed_for  # noqa: E402
+from ri.runner import get_runner, seed_for  # noqa: E402
 from ri.store import save_json, write_dataset  # noqa: E402
 
 PER_TASK = 16
@@ -69,14 +69,16 @@ def in_band(c):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--fake", action="store_true")
+    ap.add_argument("--runner", default="local", choices=["local", "modal", "fake"])
+    ap.add_argument("--fake", action="store_true", help="same as --runner fake")
     args = ap.parse_args()
+    args.fake = args.fake or args.runner == "fake"
     cands, spend = [], 0.0
     for task, levels in LEVELS.items():
         for lv, params in enumerate(levels, start=1):
             cands += generate(task, lv, params, PER_LEVEL, seed=1000 + lv)
 
-    with (FakeRunner() if args.fake else ModalRunner()) as runner:
+    with get_runner("fake" if args.fake else args.runner) as runner:
         spend += screen(runner, cands, "unrelated/round1")
         # Second round for any task that is short: more from its best level.
         extra = []

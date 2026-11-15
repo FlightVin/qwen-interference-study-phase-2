@@ -95,9 +95,11 @@ def grade_batch(jobs: list[tuple[dict, str, bool]], workers: int = 4) -> list[tu
     """Grade many attempts in worker processes (Math-Verify's timeouts need a main thread)."""
     if workers <= 1 or len(jobs) < 64:
         return [grade(*j) for j in jobs]
+    import multiprocessing as mp
     from concurrent.futures import ProcessPoolExecutor
 
-    with ProcessPoolExecutor(max_workers=workers) as ex:
+    # "spawn": forking a process that already holds a CUDA context and vLLM threads can deadlock.
+    with ProcessPoolExecutor(max_workers=workers, mp_context=mp.get_context("spawn")) as ex:
         return list(ex.map(_grade_star, jobs, chunksize=64))
 
 

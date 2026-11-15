@@ -1,12 +1,14 @@
 """Sampling backends used by the build scripts.
 
-ModalRunner calls the vLLM sampler on Modal (costs money). FakeRunner simulates attempts locally so
-the scripts can be tested end to end for free; its outputs must never be used as data.
+LocalRunner runs vLLM in this process on the local GPU (a Babel job's GPU). ModalRunner calls the
+vLLM sampler on Modal (costs money). FakeRunner simulates attempts so the scripts can be tested
+end to end for free; its outputs must never be used as data. Pick one with get_runner(name).
 """
 
 from __future__ import annotations
 
 import hashlib
+import os
 import random
 
 
@@ -35,8 +37,51 @@ def _chunks(items: list, size: int) -> list[list]:
     return [items[i : i + size] for i in range(0, len(items), size)]
 
 
+class LocalRunner:
+    """vLLM on this machine's GPU. Loads the model once; use as a context manager."""
+
+    fake = False
+    paid = False
+
+    def __enter__(self):
+        from ri import config
+        from ri.engine import Engine
+
+        workers = int(os.environ.get("SLURM_CPUS_PER_TASK", os.cpu_count() or 2))
+        self.engine = Engine(raw_root=str(config.RAW_OUTPUTS), grade_workers=max(1, workers))
+        self.stats = {"generated_tokens": 0, "generate_s": 0.0, "load_s": self.engine.load_s}
+        return self
+
+    def __exit__(self, *exc):
+        pass
+
+    def sample(self, items: list[dict], tag: str, return_texts: str = "correct",
+               attempts_per_chunk: int = 1280, save_token_ids: bool = False) -> tuple[dict, float]:
+        n = max(it["n"] for it in items)
+        size = max(1, attempts_per_chunk // n)
+        by_id, toks, secs = {}, 0, 0.0
+        for i, chunk in enumerate(_chunks(items, size)):
+            r = self.engine.run({"tag": tag, "chunk": i, "return_texts": return_texts,
+                                 "items": chunk, "save_token_ids": save_token_ids})
+            for it in r["items"]:
+                by_id[it["id"]] = it
+            toks += r["generated_tokens"]
+            secs += r["generate_s"]
+        self.stats["generated_tokens"] += toks
+        self.stats["generate_s"] += secs
+        print(f"  [{tag}] {len(items)} items, {toks/1e6:.2f}M tokens, {toks/max(secs,1):.0f} tok/s",
+              flush=True)
+        return by_id, 0.0
+
+
+def get_runner(name: str):
+    return {"local": LocalRunner, "modal": ModalRunner, "fake": FakeRunner}[name]()
+
+
 class ModalRunner:
     """Use as a context manager so one Modal app session (and warm containers) serves all rounds."""
+
+    paid = True
 
     fake = False
 
@@ -49,6 +94,7 @@ class ModalRunner:
         self._out.__enter__()
         self._run = app.run()
         self._run.__enter__()
+        self.stats = {"generated_tokens": 0, "generate_s": 0.0, "load_s": 0.0}
         return self
 
     def __exit__(self, *exc):
@@ -74,6 +120,8 @@ class ModalRunner:
                 by_id[it["id"]] = it
         toks = sum(r["generated_tokens"] for r in results)
         secs = sum(r["generate_s"] for r in results)
+        self.stats["generated_tokens"] += toks
+        self.stats["generate_s"] += secs
         print(f"  [{tag}] {len(items)} items, {toks/1e6:.2f}M tokens, "
               f"{toks/max(secs,1):.0f} tok/s per container, est. ${cost:.2f}")
         return by_id, cost
@@ -83,8 +131,10 @@ class FakeRunner:
     """Local stand-in for testing. Pass rate falls with difficulty; word tasks sit near 50%."""
 
     fake = True
+    paid = False
 
     def __enter__(self):
+        self.stats = {"generated_tokens": 0, "generate_s": 0.0, "load_s": 0.0}
         return self
 
     def __exit__(self, *exc):

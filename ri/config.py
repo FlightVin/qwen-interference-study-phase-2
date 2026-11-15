@@ -1,5 +1,6 @@
 """Settings shared by every script. Change values here, not in the scripts."""
 
+import os
 from pathlib import Path
 
 # --- Model (same pinned revision as the previous study) ---
@@ -32,7 +33,8 @@ HARD_TARGET = 70           # auto-qualified problems to collect (64 needed + mar
 HARD_BUDGET_USD = 25.0     # stop screening at this estimated spend
 TOTAL_DATASET_CAP_USD = 35.0   # whole dataset build, checked against Modal's metered cost
 METERED_STOP_HARD_USD = 27.0   # stop hard screening once Modal's metered month total passes this
-HARD_BATCH_SIZE = 200
+HARD_BATCH_SIZE = 200      # Modal (one orchestrator): problems per batch
+HARD_WORKER_BATCH = 40     # Babel (one worker per GPU): problems a worker claims at a time
 N_TRAIN, N_HELDOUT = 32, 32
 MIN_HELDOUT = 16
 
@@ -42,7 +44,9 @@ COMPANION_BAND = (5, 11)   # correct out of 16 (30-70%)
 
 # --- Paths ---
 ROOT = Path(__file__).resolve().parent.parent
-DATA = ROOT / "data"
+# On Babel, RI_DATA points at compute storage ($PROJ_DATA/data); never at /home.
+DATA = Path(os.environ["RI_DATA"]) if os.environ.get("RI_DATA") else ROOT / "data"
+RAW_OUTPUTS = DATA / "raw_outputs"   # full sampled texts (local runner); Modal uses its Volume
 RAW = DATA / "raw"
 CANDIDATES = DATA / "candidates"
 SCREENING = DATA / "screening"

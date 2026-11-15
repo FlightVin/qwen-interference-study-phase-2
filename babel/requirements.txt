@@ -1,0 +1,6 @@
+# Pinned environment for Babel jobs (built by babel/setup_env.sh into $PROJ_DATA/envs/ri-v1).
+# Same versions as the previous study's Babel environment; vllm 0.31.0 pins torch 2.13.0.
+vllm==0.31.0
+transformers==5.10.4
+math-verify[antlr4_13_2]==0.9.0
+reasoning-gym==0.1.25

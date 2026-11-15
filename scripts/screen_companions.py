@@ -9,7 +9,7 @@ text. Then 16 attempts (set 1) and the 30-70% band; in-band candidates get 16 mo
 Both sets save exact token ids for the gradient check, which makes the final pick of 2 per hard
 problem (scripts/gradient_check.py).
 
-Usage: python scripts/screen_companions.py related|conflicting [--fake]
+Usage: python scripts/screen_companions.py related|conflicting [--runner local|modal|fake]
 Output: data/screening/{kind}_screened.json
 """
 
@@ -22,7 +22,7 @@ from ri import config  # noqa: E402
 from ri.grading import gold_parses, math_correct  # noqa: E402
 from ri.metrics import summarize  # noqa: E402
 from ri.prompts import math_prompt  # noqa: E402
-from ri.runner import FakeRunner, ModalRunner, seed_for  # noqa: E402
+from ri.runner import get_runner, seed_for  # noqa: E402
 from ri.store import load_json, save_json  # noqa: E402
 
 
@@ -44,8 +44,10 @@ def validate(c: dict, hard: dict) -> str | None:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("kind", choices=["related", "conflicting"])
-    ap.add_argument("--fake", action="store_true")
+    ap.add_argument("--runner", default="local", choices=["local", "modal", "fake"])
+    ap.add_argument("--fake", action="store_true", help="same as --runner fake")
     args = ap.parse_args()
+    args.fake = args.fake or args.runner == "fake"
     final_dir = config.DATA / "fake_final" if args.fake else config.FINAL
     hard = {h["id"]: h for h in load_json(final_dir / "hard_train.json")["items"]}
     src = config.DATA / ("fake_authoring" if args.fake else "authoring") / f"{args.kind}_candidates.json"
@@ -61,7 +63,7 @@ def main():
 
     lo, hi = config.COMPANION_BAND
     spend = 0.0
-    with (FakeRunner() if args.fake else ModalRunner()) as runner:
+    with get_runner("fake" if args.fake else args.runner) as runner:
         def items(cs, set_tag):
             return [{"id": c["id"], "prompt": math_prompt(c["problem"]),
                      "grader": {"type": "math", "gold": c["answer"]}, "n": config.COMPANION_ATTEMPTS,
