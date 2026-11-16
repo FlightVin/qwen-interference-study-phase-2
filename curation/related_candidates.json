@@ -1748,5 +1748,159 @@
   "problem": "For a positive integer $k$ let $f(k)$ be the square of the sum of the digits of $k$. Find the smallest positive integer $k$ with $f(k)=289$.",
   "answer": "89",
   "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1735-11",
+  "pair_hard_id": "omni-1735",
+  "problem": "Write $\\left(1+\\frac{1}{12}\\right)^{12}$ as a fraction in lowest terms.",
+  "answer": "\\frac{23298085122481}{8916100448256}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1735-12",
+  "pair_hard_id": "omni-1735",
+  "problem": "Compute $\\sum_{k=0}^{7} \\binom{7}{k} \\frac{1}{7^{k}}$.",
+  "answer": "\\frac{2097152}{823543}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0596-8",
+  "pair_hard_id": "omni-0596",
+  "problem": "Triangle $A B C$ has $A B=6, B C=8, A C=10$. For a point $P$ inside or on the triangle, let $d(P, \\ell)$ be its distance to side $\\ell$. Find the minimum of $d(P, A C)-d(P, B C)$.",
+  "answer": "-6",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0596-9",
+  "pair_hard_id": "omni-0596",
+  "problem": "Triangle $A B C$ has $A B=6, B C=8, A C=10$. For a point $P$ inside or on the triangle, let $d(P, \\ell)$ be its distance to side $\\ell$. Find the maximum of $2 d(P, A B)+d(P, A C)$.",
+  "answer": "16",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0848-9",
+  "pair_hard_id": "omni-0848",
+  "problem": "Point $M$ satisfies $M A=1$, $M B=2$, $M C=3$ and $\\angle A M B=\\angle B M C=\\angle C M A=120^{\\circ}$. Find the area of triangle $A B C$.",
+  "answer": "\\frac{11 \\sqrt{3}}{4}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0848-10",
+  "pair_hard_id": "omni-0848",
+  "problem": "Point $M$ satisfies $M A=M B=3$ and $\\angle A M B=120^{\\circ}$. Find the area of triangle $M A B$.",
+  "answer": "\\frac{9 \\sqrt{3}}{4}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2082-10",
+  "pair_hard_id": "omni-2082",
+  "problem": "Let $A B C$ be a triangle with $A B=13, B C=14$, and $C A=15$, and let $D$ be the foot of the altitude from $A$ to $B C$. The incircle of triangle $A C D$ touches $B C$ at $Y$. Find $D Y$.",
+  "answer": "3",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2082-11",
+  "pair_hard_id": "omni-2082",
+  "problem": "Let $A B C$ be a triangle with $A B=13, B C=14$, and $C A=15$, and let $D$ be the foot of the altitude from $A$ to $B C$. The incircle of triangle $A C D$ touches $A D$ at $Q$. Find $A Q$.",
+  "answer": "9",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2584-10",
+  "pair_hard_id": "omni-2584",
+  "problem": "Consider all rectangular boxes with integer side lengths $s_{1} \\leq s_{2} \\leq s_{3}$ such that $s_{1} s_{2}=48$ and $s_{2} s_{3}=240$. Find the sum of all possible values of $s_{2}$.",
+  "answer": "20",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2584-11",
+  "pair_hard_id": "omni-2584",
+  "problem": "Consider all rectangular boxes with integer side lengths $s_{1} \\leq s_{2} \\leq s_{3}$ such that $s_{1} s_{2}=48$ and $s_{2} s_{3}=240$. Find the largest possible volume.",
+  "answer": "1440",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2584-12",
+  "pair_hard_id": "omni-2584",
+  "problem": "Consider all rectangular boxes with integer side lengths $s_{1} \\leq s_{2} \\leq s_{3}$ such that $s_{1} s_{2}=48$ and $s_{2} s_{3}=240$. Find the smallest possible value of $s_{1}+s_{2}+s_{3}$.",
+  "answer": "36",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2215-9",
+  "pair_hard_id": "omni-2215",
+  "problem": "Find $P(0)$ for the polynomial $P(x)=x^{4}-20 x^{3}+a x^{2}+b x+c$, given that $P(2)=5, P(4)=9$, and $P(6)=13$.",
+  "answer": "385",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2215-10",
+  "pair_hard_id": "omni-2215",
+  "problem": "Find the sum of the coefficients of $P(x)=x^{4}-20 x^{3}+a x^{2}+b x+c$, given that $P(2)=5, P(4)=9$, and $P(6)=13$.",
+  "answer": "108",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2207-9",
+  "pair_hard_id": "omni-2207",
+  "problem": "How many functions $f:\\{1,2,3\\} \\rightarrow\\{1,2,3,4,5\\}$ satisfy $f(j)<f(i)+j-i$ for all integers $1 \\leq i<j \\leq 3$?",
+  "answer": "35",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1689-10",
+  "pair_hard_id": "omni-1689",
+  "problem": "How many pairs $(n, k)$ of nonnegative integers satisfy $17 n+19 k=2000$?",
+  "answer": "6",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1689-11",
+  "pair_hard_id": "omni-1689",
+  "problem": "How many pairs $(n, k)$ of nonnegative integers satisfy $13 n+15 k=3000$?",
+  "answer": "16",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1728-9",
+  "pair_hard_id": "omni-1728",
+  "problem": "The exterior angles of a convex 27-gon form an arithmetic progression with common difference $1^{\\circ}$. Find the largest exterior angle, in degrees.",
+  "answer": "\\frac{79}{3}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1728-10",
+  "pair_hard_id": "omni-1728",
+  "problem": "The exterior angles of a convex 24-gon form an arithmetic progression with common difference $1^{\\circ}$. Find the smallest exterior angle, in degrees.",
+  "answer": "\\frac{7}{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1900-10",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=1, a_{2}=5$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n \\geq 1$. Find $a_{6}$.",
+  "answer": "- \\frac{1}{5}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1900-11",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=1, a_{2}=5$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n \\geq 1$. Find $a_{7}$.",
+  "answer": "- \\frac{5}{12}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3709-11",
+  "pair_hard_id": "omni-3709",
+  "problem": "Let $P(n)$ be the number of permutations $(a_{1}, \\ldots, a_{n})$ of $\\{1, \\ldots, n\\}$ for which $k a_{k}$ is a perfect square for all $k$. Find $P(4)$.",
+  "answer": "2",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3709-12",
+  "pair_hard_id": "omni-3709",
+  "problem": "Let $P(n)$ be the number of permutations $(a_{1}, \\ldots, a_{n})$ of $\\{1, \\ldots, n\\}$ for which $k a_{k}$ is a perfect square for all $k$. Find $P(6)$.",
+  "answer": "2",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
  }
 ]

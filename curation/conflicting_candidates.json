@@ -1692,5 +1692,215 @@
   "problem": "Let $A B C$ be a triangle with $A B=13, B C=14$, and $C A=15$. Let $D$ be the foot of the altitude from $A$. The incircle of $A B C$ touches $B C$ at $T$. Find $D T$.",
   "answer": "1",
   "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1735-8",
+  "pair_hard_id": "omni-1735",
+  "problem": "We keep rolling a fair 7-sided die (faces 1 to 7) until we get a value less than or equal to the previous roll. What is the probability that exactly 2 rolls are made?",
+  "answer": "\\frac{4}{7}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1735-9",
+  "pair_hard_id": "omni-1735",
+  "problem": "We keep rolling a fair 4-sided die (faces 1 to 4) until we get a value less than or equal to the previous roll. What is the probability that at least 3 rolls are made?",
+  "answer": "\\frac{3}{8}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1814-10",
+  "pair_hard_id": "omni-1814",
+  "problem": "The circle $x^{2}+y^{2}=5$ meets the hyperbola $x y=2$ at four points, which form a rectangle. Find its area.",
+  "answer": "6",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1814-11",
+  "pair_hard_id": "omni-1814",
+  "problem": "The circle $x^{2}+y^{2}=5$ meets the hyperbola $x y=2$ at four points, which form a rectangle. Find its perimeter.",
+  "answer": "8 \\sqrt{2}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2140-8",
+  "pair_hard_id": "omni-2140",
+  "problem": "The six roots of $z^{6}=27$ form a regular hexagon in the complex plane. Find its area.",
+  "answer": "\\frac{9 \\sqrt{3}}{2}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2140-9",
+  "pair_hard_id": "omni-2140",
+  "problem": "The eight roots of $z^{8}=16$ form a regular octagon in the complex plane. Find its area.",
+  "answer": "4 \\sqrt{2}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1877-9",
+  "pair_hard_id": "omni-1877",
+  "problem": "A circle of radius 3 has center $B$, and point $A$ satisfies $A B=5$. Find the length of a tangent segment from $A$ to the circle.",
+  "answer": "4",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1877-10",
+  "pair_hard_id": "omni-1877",
+  "problem": "A circle of radius 12 has center $B$, and point $A$ satisfies $A B=20$. A tangent from $A$ touches the circle at $T$. Find $\\sin \\angle T A B$.",
+  "answer": "\\frac{3}{5}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1877-11",
+  "pair_hard_id": "omni-1877",
+  "problem": "A circle of radius 6 has center $B$, and points $A$ and $C$ lie on a line through $B$ with $A B=B C=10$. The tangents from $A$ and $C$ on the same side of the line meet at $K$. Find the distance from $K$ to $B$.",
+  "answer": "\\frac{15}{2}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1299-7",
+  "pair_hard_id": "omni-1299",
+  "problem": "A $V$-shape is a figure consisting of two rays with a common endpoint that do not lie on one line. What is the maximum number of points in which a circle and a $V$-shape can intersect?",
+  "answer": "4",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1299-8",
+  "pair_hard_id": "omni-1299",
+  "problem": "What is the maximum number of points in which a line and two circles can intersect in total?",
+  "answer": "4",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1315-5",
+  "pair_hard_id": "omni-1315",
+  "problem": "Stacy has $d$ dollars. She enters a mall with 2 shops and a lottery stall. First she plays the lottery and her money is doubled, then she goes into a shop and spends 1000 dollars. She does this once more. When she comes out of the last shop she has no money left. What is the minimum possible value of $d$?",
+  "answer": "750",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1315-6",
+  "pair_hard_id": "omni-1315",
+  "problem": "Stacy has $d$ dollars. She enters a mall with 2 shops and a lottery stall. First she goes into a shop and spends 1024 dollars, then she plays the lottery and her money is doubled. She does this once more. When she comes out of the last lottery she has no money left. What is the minimum possible value of $d$?",
+  "answer": "1536",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2584-9",
+  "pair_hard_id": "omni-2584",
+  "problem": "The faces of a rectangular box have areas 8, 12 and 24. Find its volume.",
+  "answer": "48",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2584-10",
+  "pair_hard_id": "omni-2584",
+  "problem": "Two faces of a rectangular box have areas 18 and 24 and share an edge of length 6. Find the area of the third face.",
+  "answer": "12",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2215-9",
+  "pair_hard_id": "omni-2215",
+  "problem": "$P(x)$ is a monic cubic polynomial with $P(1)=0, P(2)=0$, and $P(3)=6$. Find $P(4)$.",
+  "answer": "24",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2215-10",
+  "pair_hard_id": "omni-2215",
+  "problem": "Let $P(x)=x^{2}+b x+c$ with $P(1)=4$ and $P(2)=9$. Find $P(3)$.",
+  "answer": "16",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0848-10",
+  "pair_hard_id": "omni-0848",
+  "problem": "A regular hexagon $A B C D E F$ has side length 1. Find the total area of the six triangles $A B C, B C D, C D E, D E F, E F A, F A B$.",
+  "answer": "\\frac{3 \\sqrt{3}}{2}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0848-11",
+  "pair_hard_id": "omni-0848",
+  "problem": "A regular hexagon $A B C D E F$ has side length 2. Find the area of quadrilateral $A B C D$.",
+  "answer": "3 \\sqrt{3}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0912-10",
+  "pair_hard_id": "omni-0912",
+  "problem": "How many ordered pairs $(X, Y)$ of subsets of $\\{1,2,3\\}$ are there such that $X$ is a proper subset of $Y$?",
+  "answer": "19",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0912-11",
+  "pair_hard_id": "omni-0912",
+  "problem": "How many ordered pairs $(X, Y)$ of subsets of $\\{1,2\\}$ are there such that neither $X \\subseteq Y$ nor $Y \\subseteq X$?",
+  "answer": "2",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2546-9",
+  "pair_hard_id": "omni-2546",
+  "problem": "Two lines through a point $Q$ meet a circle at $A, B$ and at $C, D$, with $Q A=4, Q B=9$, and $Q C=3$. Find $Q D$.",
+  "answer": "12",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2546-10",
+  "pair_hard_id": "omni-2546",
+  "problem": "Two lines through a point $Q$ meet a circle at $A, B$ and at $C, D$, with $Q A=2$, $A B=6$, and $Q C=1$, where $Q C<Q D$. Find $C D$.",
+  "answer": "15",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1900-10",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=2, a_{2}=1$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n \\geq 1$. Find $a_{6}$.",
+  "answer": "- \\frac{1}{7}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1900-11",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=3, a_{2}=2$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n \\geq 1$. Find $a_{6}$.",
+  "answer": "\\frac{1}{2}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1900-12",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=2, a_{2}=3$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n \\geq 1$. Find $a_{6}$.",
+  "answer": "\\frac{1}{3}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1391-9",
+  "pair_hard_id": "omni-1391",
+  "problem": "Suppose $x$ is a real number such that $\\sin \\left(1+\\cos ^{2} x+\\sin ^{4} x\\right)=\\frac{24}{25}$. Compute $\\cos \\left(1+\\sin ^{2} x+\\cos ^{4} x\\right)$.",
+  "answer": "- \\frac{7}{25}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1391-10",
+  "pair_hard_id": "omni-1391",
+  "problem": "Suppose $x$ is a real number such that $\\cos \\left(1+\\cos ^{2} x+\\sin ^{4} x\\right)=-\\frac{1}{3}$. Compute $\\sin \\left(1+\\sin ^{2} x+\\cos ^{4} x\\right)$.",
+  "answer": "\\frac{2 \\sqrt{2}}{3}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-3926-10",
+  "pair_hard_id": "omni-3926",
+  "problem": "For a positive integer $k$ let $g(k)$ be the sum of the squares of the digits of $k$, and let $g_{1}=g$, $g_{n+1}(k)=g\\left(g_{n}(k)\\right)$. Compute $g_{6}(4)$.",
+  "answer": "42",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-3926-11",
+  "pair_hard_id": "omni-3926",
+  "problem": "For a positive integer $k$ let $g(k)$ be the sum of the squares of the digits of $k$, and let $g_{1}=g$, $g_{n+1}(k)=g\\left(g_{n}(k)\\right)$. Compute $g_{7}(4)$.",
+  "answer": "20",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
  }
 ]
