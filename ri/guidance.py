@@ -41,8 +41,18 @@ def leaks(prefix: str, answer: str) -> bool:
     return re.search(rf"(?<![\d.]){re.escape(a)}(?![\d.])", last) is not None
 
 
+def states_answer(sentence: str, answer: str) -> bool:
+    """A sentence that states a two-character answer as a standalone number (anywhere)."""
+    a = norm(answer)
+    # Two-character answers only: longer ones are caught by leaks() as substrings, one-character
+    # ones appear in ordinary sentences. A sentence-final period is not a decimal point.
+    return len(a) == 2 and re.search(rf"(?<![\d.]){re.escape(a)}(?!\d|\.\d)", norm(sentence)) is not None
+
+
 def prefixes(solution: str, answer: str) -> list[dict]:
-    sents = sentences(solution)
+    # Drop sentences that state the answer wherever they are (e.g. an opening "We first show that
+    # M+N >= 16."), not only trailing ones; leaks() below still trims the end. Added 2026-11-16.
+    sents = [s for s in sentences(solution) if not states_answer(s, answer)]
     total = sum(len(s) for s in sents)
     out, seen = [], set()
     for f in FRACTIONS:
