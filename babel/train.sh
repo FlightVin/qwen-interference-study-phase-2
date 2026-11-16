@@ -17,10 +17,22 @@ mkdir -p "$SCR"
 trap 'rm -rf "$SCR"' EXIT
 # Read the model from /data/user_data once: copy it to node-local disk; vLLM and the trainer load it
 # from there (the shared NFS server ran at 2-3 MB/s on 2026-11-16 12:40).
+# The cache's snapshot entries are links to files stored elsewhere, so copy with -L (the actual
+# files) and use the copy only if it holds the full weights; otherwise load from NFS as before.
 M=models--Qwen--Qwen3-1.7B
 t0=$(date +%s)
-mkdir -p "$SCR/hf/hub" && cp -r "$PROJ_DATA/hf/hub/$M" "$SCR/hf/hub/" && export HF_HOME=$SCR/hf
-echo "== model copied to node-local disk in $(( $(date +%s) - t0 )) s ($(du -sh "$SCR/hf/hub/$M" | cut -f1))"
+if mkdir -p "$SCR/hf/hub" && cp -rL "$PROJ_DATA/hf/hub/$M" "$SCR/hf/hub/" 2>/dev/null; then
+    W=$(find "$SCR/hf/hub/$M/snapshots" -name '*.safetensors' -type f -printf '%s\n' 2>/dev/null | awk '{s+=$1} END {print s+0}')
+else
+    W=0
+fi
+if [ "$W" -gt 3000000000 ]; then
+    export HF_HOME=$SCR/hf
+    echo "== model copied to node-local disk in $(( $(date +%s) - t0 )) s ($(( W / 1000000 )) MB of weights)"
+else
+    rm -rf "$SCR/hf"
+    echo "== model copy incomplete ($W bytes of weights); loading from $PROJ_DATA/hf"
+fi
 echo "== disk: $(df -h "$PROJ_DATA" | tail -1)"
 "$PY" - <<'PYEOF'
 import sys, torch
