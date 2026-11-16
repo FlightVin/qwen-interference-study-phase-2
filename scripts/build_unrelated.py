@@ -12,6 +12,7 @@ Output: data/final/companion_unrelated.json
 
 import argparse
 import json
+import re
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -25,14 +26,14 @@ from ri.store import save_json, write_dataset  # noqa: E402
 
 PER_TASK = 16
 PER_LEVEL = 40
+# Version 2 (2026-11-15). Version 1's levels were far too hard for Qwen3-1.7B non-thinking: most
+# items scored 0/16 (results/curation-2026-11-15/collect/unrelated_diag.json). These are easier.
+VERSION = "v2"
 LEVELS = {
-    "word_sorting": [dict(min_words=4, max_words=6), dict(min_words=8, max_words=10),
-                     dict(min_words=12, max_words=15)],
-    "letter_jumble": [dict(min_words=3, max_words=5), dict(min_words=6, max_words=9),
-                      dict(min_words=10, max_words=14)],
-    "spell_backward": [dict(min_word_len=5, max_word_len=7), dict(min_word_len=8, max_word_len=10)],
-    "word_sequence_reversal": [dict(min_words=6, max_words=9), dict(min_words=12, max_words=16),
-                               dict(min_words=20, max_words=28)],
+    "word_sorting": [dict(min_words=3, max_words=4), dict(min_words=4, max_words=5)],
+    "letter_jumble": [dict(min_words=1, max_words=2), dict(min_words=2, max_words=3)],
+    "spell_backward": [dict(min_word_len=4, max_word_len=6), dict(min_word_len=5, max_word_len=7)],
+    "word_sequence_reversal": [dict(min_words=3, max_words=4), dict(min_words=4, max_words=6)],
 }
 
 
@@ -43,7 +44,9 @@ def generate(task, level, params, count, seed):
     out = []
     for i in range(count):
         e = json.loads(json.dumps(ds[i], default=str))  # what the container will see
-        out.append({"id": f"rg-{task}-L{level}-s{seed}-{i:03d}", "task": task, "level": level,
+        if re.search(r"gutenberg|ebook|copyright|license", e["answer"], re.I):
+            continue  # text from the source book's licence boilerplate, not real prose
+        out.append({"id": f"rg{VERSION}-{task}-L{level}-s{seed}-{i:03d}", "task": task, "level": level,
                     "config": params, "entry": e})
     return out
 
@@ -79,7 +82,7 @@ def main():
             cands += generate(task, lv, params, PER_LEVEL, seed=1000 + lv)
 
     with get_runner("fake" if args.fake else args.runner) as runner:
-        spend += screen(runner, cands, "unrelated/round1")
+        spend += screen(runner, cands, f"unrelated-{VERSION}/round1")
         # Second round for any task that is short: more from its best level.
         extra = []
         for task, levels in LEVELS.items():
@@ -90,7 +93,7 @@ def main():
                        key=lambda lv: sum(in_band(c) for c in mine if c["level"] == lv))
             extra += generate(task, best, levels[best - 1], PER_LEVEL * 2, seed=2000 + best)
         if extra:
-            spend += screen(runner, extra, "unrelated/round2")
+            spend += screen(runner, extra, f"unrelated-{VERSION}/round2")
             cands += extra
 
         chosen = []
@@ -109,7 +112,7 @@ def main():
                 print(f"WARNING: {task} has only {len(picked)} problems in band")
             chosen += picked
         # Second, independent set of 16 attempts for the gradient check.
-        spend += screen(runner, chosen, "unrelated/set2", set_name="set2")
+        spend += screen(runner, chosen, f"unrelated-{VERSION}/set2", set_name="set2")
 
     screen_dir = config.DATA / ("fake_screening" if args.fake else "screening")
     save_json(screen_dir / "unrelated_candidates.json",

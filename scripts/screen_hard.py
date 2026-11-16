@@ -390,7 +390,7 @@ def unrelated_diag(fake: bool, out: Path) -> None:
     for g in groups.values():
         g["c_of_16"] = dict(sorted(g["c_of_16"].items()))
     samples = {}
-    for path in sorted((config.RAW_OUTPUTS / "unrelated" / "round1").glob("chunk_*.jsonl.gz")):
+    for path in sorted(config.RAW_OUTPUTS.glob("unrelated*/round1/chunk_*.jsonl.gz"))[-50:]:
         with gzip.open(path, "rt") as f:
             for line in f:
                 r = json.loads(line)

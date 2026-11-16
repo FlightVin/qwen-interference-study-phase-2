@@ -6,6 +6,7 @@ exact match (score 1.0).
 
 from __future__ import annotations
 
+import re
 from functools import lru_cache
 
 
@@ -62,9 +63,29 @@ def gold_parses(gold: str) -> bool:
 
 
 _RG_CACHE: dict = {}
+_WRAPPER = re.compile(r"\\(?:text|textbf|textit|texttt|mathrm|mathbf|mathit)\s*\{(.*)\}", re.S)
+
+
+def strip_format(ans: str) -> str:
+    """Remove formatting around a word-task answer; the content itself is not changed.
+    The model often writes \\boxed{\\text{...}}, $...$, **...** or a trailing period (2026-11-15)."""
+    s = ans.strip()
+    for _ in range(4):  # nested wrappers, e.g. $\\text{...}$
+        prev = s
+        s = s.strip().strip("$").strip()
+        m = _WRAPPER.fullmatch(s)
+        if m:
+            s = m.group(1)
+        s = s.strip().strip("*").strip().strip("\"'“”‘’`").strip()
+        if s.endswith(".") and not prev.strip().endswith("..."):
+            s = s[:-1].rstrip()
+        if s == prev:
+            break
+    return s
 
 
 def word_task_correct(task: str, entry: dict, predicted: str | None) -> bool:
+    """Exact match (Reasoning Gym's own checker, score 1.0) after removing formatting wrappers."""
     if not predicted:
         return False
     import reasoning_gym as rg
@@ -73,10 +94,13 @@ def word_task_correct(task: str, entry: dict, predicted: str | None) -> bool:
     if ds is None:
         ds = rg.create_dataset(task, size=1, seed=0)
         _RG_CACHE[task] = ds
-    try:
-        return float(ds.score_answer(predicted, entry)) >= 1.0
-    except Exception:
-        return False
+    for cand in dict.fromkeys((predicted, strip_format(predicted))):
+        try:
+            if float(ds.score_answer(cand, entry)) >= 1.0:
+                return True
+        except Exception:
+            continue
+    return False
 
 
 def grade(grader: dict, text: str, truncated: bool) -> tuple[bool, str | None]:
