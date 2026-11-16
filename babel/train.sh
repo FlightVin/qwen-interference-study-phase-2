@@ -49,7 +49,13 @@ if [ "$SETUP" = smoke ]; then
 else
     ARGS=()
     for x in "$@"; do
-        if [ "$x" = --clean-smoke ]; then   # remove the smoke test's run folder (our own data only)
+        if [ "$x" = --clean-pilot-ckpts ]; then   # checkpoints of the cancelled 60-round, 2-step runs
+            for D in "$PROJ_DATA"/data/runs/{hard,related,unrelated,conflicting,guided}-s[01]; do
+                if [ -f "$D/ckpt.pt" ] && grep -q '"rounds": 60,' "$D/run.json" 2>/dev/null; then
+                    echo "== removing pilot checkpoint $D/ckpt.pt ($(du -sh "$D/ckpt.pt" | cut -f1))"; rm -f "$D/ckpt.pt"
+                fi
+            done
+        elif [ "$x" = --clean-smoke ]; then   # remove the smoke test's run folder (our own data only)
             D="$PROJ_DATA/data/runs/related-s0-smoke"
             if [ -f "$D/run.json" ] && grep -q '"run": "related-s0-smoke"' "$D/run.json"; then
                 echo "== removing smoke run folder $D ($(du -sh "$D" | cut -f1))"; rm -rf "$D"
@@ -60,6 +66,6 @@ else
             ARGS+=("$x")
         fi
     done
-    "$PY" "$REPO/scripts/train_grpo.py" --setup "$SETUP" --seed "$SEED" "${ARGS[@]}"
+    "$PY" "$REPO/scripts/train_grpo.py" --setup "$SETUP" --seed "$SEED" ${RUN_NAME:+--run "$RUN_NAME"} "${ARGS[@]}"
     echo "TRAIN $SETUP s$SEED COMPLETE"
 fi

@@ -1,7 +1,7 @@
 """GRPO trainer with the plan's gradient diagnostics (plan: "Training settings", "Gradient
 measurements").
 
-Objective per step: L = -(1/64) * sum over attempts of mean_t min(r_t A, clip(r_t, 0.8, 1.2) A),
+Objective per step: L = -(1/32) * sum over attempts of mean_t min(r_t A, clip(r_t, 0.8, 1.2) A),
 A = (reward - group mean) / (group std + 1e-6), r_t = pi(token) / pi_old(token); no KL or entropy
 term. AdamW (lr 2e-6, betas 0.9/0.999, no weight decay), gradient-norm clip 1.0. Weights and Adam
 state in fp32; forward and backward under bf16 autocast.
@@ -23,7 +23,9 @@ import time
 
 LOGP_CHUNK = int(os.environ.get("RI_LOGP_CHUNK", "1024"))
 CLIP = 0.2
-LOSS_DIVISOR = 64.0
+# 4 steps per round, each 1 hard + 1 companion group x 16 attempts = 32 attempts (owner 2026-11-16, as the
+# previous study's per-step mean). The same fixed divisor in Hard only keeps its hard part identical.
+LOSS_DIVISOR = 32.0
 
 
 def advantages(rewards: list[float]) -> list[float]:

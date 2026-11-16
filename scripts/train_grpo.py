@@ -1,8 +1,9 @@
 """GRPO training run for one setup and seed (plan: "Ray interference in GRPO: experiment plan").
 
 Each round: sample 16 attempts for the round's 4 hard problems (+ 4 companions), grade them, then
-2 optimizer steps (step 1: hard 0-1 + companions 0-1, on-policy; step 2: hard 2-3 + companions
-2-3, clipped ratio against the sampling policy). After each round: teacher-forced likelihood of 2
+4 optimizer steps (step k: hard k + companion k; step 1 on-policy, steps 2-4 with the clipped ratio
+against the sampling policy). Owner 2026-11-16: 128 rounds, 4 steps per round, evaluations at rounds
+0, 32, 64, 96 and 128 (the previous study's scale). After each round: teacher-forced likelihood of 2
 correct solutions per hard problem. Hard direction recomputed every 5 rounds. Evaluation (the 32
 training and 32 held-out hard problems x 16 attempts, MATH-500 check x 4) at the base model (one
 run only) and at rounds 30 and 60, with fixed evaluation seeds. Checkpoint (weights + optimizer)
@@ -36,6 +37,7 @@ from ri.runner import seed_for  # noqa: E402
 from ri.store import load_json, save_json  # noqa: E402
 
 N_ATTEMPTS = 16
+STEPS_PER_ROUND = 4   # step k: hard k + companion k
 EVAL_N = {"hard_train": 16, "hard_heldout": 16, "math500": 4}
 
 
@@ -210,12 +212,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--setup", required=True, choices=schedule.SETUPS)
     ap.add_argument("--seed", type=int, required=True)
-    ap.add_argument("--rounds", type=int, default=60)
-    ap.add_argument("--eval-rounds", default="30,60")
+    ap.add_argument("--rounds", type=int, default=128)
+    ap.add_argument("--eval-rounds", default="32,64,96,128")
     ap.add_argument("--base-eval", action="store_true", help="also evaluate the base model (once per study)")
     ap.add_argument("--ckpt-every", type=int, default=5, help="0: no periodic checkpoints (non-preemptible jobs)")
     ap.add_argument("--dir-every", type=int, default=5)
-    ap.add_argument("--save-weights", default="60", help="rounds with a bf16 weight snapshot (plan: 30,60; disk)")
+    ap.add_argument("--save-weights", default="64,128", help="rounds with a bf16 weight snapshot")
     ap.add_argument("--keep-ckpt", action="store_true", help="keep the checkpoint after the last round")
     ap.add_argument("--run", default=None)
     ap.add_argument("--smoke", action="store_true", help="GPU smoke test: small evals, weight-sync check")
@@ -301,7 +303,8 @@ def main():
         rounds_path.write_text("".join(k + "\n" for k in keep))
     info = {"run": run, "setup": a.setup, "seed": a.seed, "rounds": a.rounds, "eval_rounds": sorted(eval_rounds),
             "model": config.MODEL_ID, "revision": config.MODEL_REVISION, "lr": 2e-6, "clip": 0.2,
-            "attempts": N_ATTEMPTS, "loss_divisor": 64, "max_tokens": config.MAX_TOKENS,
+            "attempts": N_ATTEMPTS, "loss_divisor": __import__("ri.grpo", fromlist=["x"]).LOSS_DIVISOR,
+            "steps_per_round": STEPS_PER_ROUND, "max_tokens": config.MAX_TOKENS,
             "host": os.uname().nodename, "slurm_job": os.environ.get("SLURM_JOB_ID"),
             "gpu": (__import__("torch").cuda.get_device_name(0) if not a.fake else "cpu"),
             "schedule": sched, "starts": (load_json(meta_path) or {}).get("starts", []) + [{"round": start, "time": time.time()}]}
@@ -366,9 +369,11 @@ def main():
             trainer.hard_direction(dir_sols, r - 1)
             T["direction"] = time.time() - td
         tl = time.time()
-        old, ent = trainer.old_logps_and_entropy(hard_g + comp_g, {"h2", "h3", "c2", "c3"})
+        later = {f"{p}{k}" for p in "hc" for k in range(1, STEPS_PER_ROUND)}   # steps 2-4: off-policy ratio
+        old, ent = trainer.old_logps_and_entropy(hard_g + comp_g, later)
         T["old_logp"] = time.time() - tl
-        steps = [trainer.step(comp_g[0:2], hard_g[0:2], old=None), trainer.step(comp_g[2:4], hard_g[2:4], old=old)]
+        steps = [trainer.step(comp_g[k:k + 1], hard_g[k:k + 1], old=None if k == 0 else old)
+                 for k in range(STEPS_PER_ROUND)]
         del old
         tl = time.time()
         lik = trainer.likelihood(lik_sols)
@@ -411,10 +416,9 @@ def main():
         with open(rounds_path, "a") as f:
             f.write(json.dumps(rec) + "\n")
         shutil.copy2(rounds_path, out_dir / "rounds.jsonl")
-        s0, s1 = steps
         cc = lambda x: f"{x:+.4f}" if x is not None else "  -    "
         print(f"r{r:03d} hard {rec['hard_success']:.3f} comp {rec['comp_success'] if rec['comp_success'] is not None else '-'} "
-              f"| cos(c,H) {cc(s0['cos_comp_H'])} {cc(s1['cos_comp_H'])} cos(h,H) {cc(s0['cos_hard_H'])} {cc(s1['cos_hard_H'])} "
+              f"| cos(c,H) {' '.join(cc(s['cos_comp_H']) for s in steps)} | cos(h,H) {' '.join(cc(s['cos_hard_H']) for s in steps)} "
               f"| lik {sum(lik.values()) / len(lik):.4f} | gen {T['generate']:.0f}s train {T['train']:.0f}s "
               f"sync {T['sync']:.0f}s round {rec['time']['round']:.0f}s | peak {peak} GiB | disk {rec['disk_free_gb']} GB free"
               + (f" | ckpt {ck_note}" if ck_note else ""), flush=True)

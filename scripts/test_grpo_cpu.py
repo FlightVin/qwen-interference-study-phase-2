@@ -73,7 +73,7 @@ t.opt.zero_grad(set_to_none=True)
 for g in G:
     A = advantages([float(x["correct"]) for x in g["attempts"]])
     for x, adv in zip(g["attempts"], A):
-        (-(adv * t.token_logps(x["prompt_token_ids"], x["token_ids"], grad=True).mean()) / 64).backward()
+        (-(adv * t.token_logps(x["prompt_token_ids"], x["token_ids"], grad=True).mean()) / grpo.LOSS_DIVISOR).backward()
 g2 = flat_grad(t)
 check(torch.allclose(g1, g2, atol=1e-7, rtol=1e-5) and g1.norm() > 0, "on-policy gradient == manual policy gradient")
 
@@ -89,7 +89,7 @@ for i, (x, adv) in enumerate(zip(gpos["attempts"], A)):
     lp = t.token_logps(x["prompt_token_ids"], x["token_ids"], grad=True)
     r = torch.exp(lp - old[("x", i)])
     if adv < 0:  # ratio > 1 + clip with negative advantage: min picks the unclipped term
-        (-(r * adv).mean() / 64).backward()
+        (-(r * adv).mean() / grpo.LOSS_DIVISOR).backward()
 gman = flat_grad(t)
 check(torch.allclose(gclip, gman, atol=1e-7, rtol=1e-5) and st["clipped_tokens"] == st["tokens"], "clipped surrogate gradient (ratio above 1+clip)")
 

@@ -1,15 +1,15 @@
 """Which problems each training round uses (plan: "The five setups", "Training settings").
 
 Every setup with the same seed sees the same 4 hard problems in the same rounds. The hard order is
-a fresh shuffle of the 32 training problems every 8 rounds (60 rounds = 7.5 passes). Companions:
+a fresh shuffle of the 32 training problems every 8 rounds (128 rounds = 16 passes). Companions:
   related / conflicting  one of the hard problem's own companions; its k-th appearance uses
                          companion k mod (number it has). A hard problem with none (conflicting
                          omni-1391) gets a companion of another problem, marked unpaired.
   guided                 the hard problem's guided item.
   unrelated              4 word tasks per round from a seeded shuffle of the 64, cycled.
   hard                   none.
-Step 1 of a round trains hard[0:2] + companions[0:2]; step 2 hard[2:4] + companions[2:4]
-(a paired companion trains in the same step as its hard problem).
+Step k of a round (k = 0..3) trains hard[k] + companions[k] (owner 2026-11-16: 4 steps per round, as
+the previous study), so a paired companion trains in the same step as its hard problem.
 """
 
 from __future__ import annotations
