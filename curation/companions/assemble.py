@@ -14,10 +14,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 sys.path[:0] = [str(HERE), str(ROOT)]
 import batch1, batch2, batch3, batch4, batch5  # noqa: E402
-try:
-    import batch6  # noqa: E402  (conflicting round 2)
-except ImportError:
-    batch6 = None
+import batch6, batch7, batch8  # noqa: E402  (round 2: 5-6; round 3: 7-8)
 from ri.grading import gold_parses, math_correct  # noqa: E402
 
 NOTES = {"related": "key step: an easy problem that isolates one step of the paired hard problem's reference solution",
@@ -33,7 +30,7 @@ def main():
         if d["id"] in train:
             hard[d["id"]] = d
     pools = {"related": [], "conflicting": []}
-    for b in [b for b in (batch1, batch2, batch3, batch4, batch5, batch6) if b]:
+    for b in (batch1, batch2, batch3, batch4, batch5, batch6, batch7, batch8):
         R, C = b.build()
         pools["related"] += R
         pools["conflicting"] += C
