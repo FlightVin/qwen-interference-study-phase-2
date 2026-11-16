@@ -5,6 +5,8 @@
 #   gradtest checks the chunked log-prob against the whole-sequence one on the GPU)
 #   guided-prefill: guided rebuilt in the assistant-turn format (backs up the user-turn file first);
 #   gradcheck-guided: gradient check of the guided pool only, merged into the existing results
+#   related-topup, conflicting-topup: screen only candidates not screened before (tag = run name);
+#   gradcheck-new: gradient check of records not measured before, merged in
 # Example (round 2 of companion screening): bash babel/finish.sh r2 related conflicting gradcheck select
 # A new <run-name> reruns steps that an earlier run already finished (screening is redone from scratch).
 set -euo pipefail
@@ -41,6 +43,8 @@ for s in "$@"; do
         gradtest) "$PY" "$REPO/scripts/test_logp_chunk.py" ;;
         gradcheck) "$PY" "$REPO/scripts/gradient_check.py" compute --runner local ;;
         gradcheck-guided) "$PY" "$REPO/scripts/gradient_check.py" compute --runner local --pools guided ;;
+        related-topup|conflicting-topup) "$PY" "$REPO/scripts/screen_companions.py" "${s%-topup}" --runner local --only-new "$RUN" ;;
+        gradcheck-new) "$PY" "$REPO/scripts/gradient_check.py" compute --runner local --new-only "$RUN" ;;
         select)   "$PY" "$REPO/scripts/gradient_check.py" select ;;
         *) echo "unknown step: $s" >&2; exit 2 ;;
     esac

@@ -13,7 +13,10 @@ gradient_check.json: records of the listed pools are replaced, all others stay a
 file before the first merge is kept as gradient_check.pre-<pools>.json. Used 2026-11-16 to redo
 guided after its assistant-turn rebuild without touching the related/conflicting records.
 
-Usage: python scripts/gradient_check.py compute [--runner local|modal] [--pools guided] | select
+--new-only LABEL (compute only) measures only groups that have no record yet (top-up candidates)
+and merges them in; every earlier record stays as it is (backup gradient_check.pre-LABEL.json).
+
+Usage: python scripts/gradient_check.py compute [--runner local|modal] [--pools guided | --new-only LABEL] | select
 """
 
 import shutil
@@ -32,7 +35,7 @@ OUT = config.SCREENING / "gradient_check.json"
 PER_HARD = 2
 
 
-def compute(runner: str, pools: list[str] | None = None):
+def compute(runner: str, pools: list[str] | None = None, new_only: str = ""):
     hard = load_json(config.FINAL / "hard_train.json")["items"]
     groups = []
     for kind in ("related", "conflicting"):
@@ -40,7 +43,7 @@ def compute(runner: str, pools: list[str] | None = None):
         for c in scr["candidates"]:
             if c.get("in_band"):
                 groups.append({"id": c["id"], "pool": kind, "pair_hard_id": c["pair_hard_id"],
-                               "tags": scr["raw_tags"]})
+                               "tags": c.get("raw_tags", scr["raw_tags"])})  # top-up items: own tags
     for it in load_json(config.FINAL / "companion_guided.json")["items"]:
         groups.append({"id": it["id"], "pool": "guided", "pair_hard_id": it["pair_hard_id"],
                        "tags": it["screening"]["raw_tags"]})
@@ -49,6 +52,17 @@ def compute(runner: str, pools: list[str] | None = None):
                        "tags": it["screening"]["raw_tags"]})
     if pools:
         groups = [g for g in groups if g["pool"] in pools]
+    if new_only:
+        have = (load_json(OUT) or {}).get("groups")
+        if not have:
+            sys.exit(f"{OUT} not found; run a full compute first")
+        groups = [g for g in groups if g["id"] not in have]
+        if not groups:
+            done = [r.get("new_only") for r in load_json(OUT).get("partial_recomputes", [])]
+            if new_only in done:  # a requeue after this merge was written
+                print(f"new-only {new_only} already merged; nothing to do")
+                return
+            sys.exit("no new groups to measure")
     job = {"hard": [{"id": h["id"], "prompt": math_prompt(h["problem"]),
                      "solutions": h["correct_solutions"]} for h in hard],
            "groups": groups}
@@ -66,20 +80,25 @@ def compute(runner: str, pools: list[str] | None = None):
 
         res = GradCheck().check(job, raw_root=str(config.RAW_OUTPUTS))
         res["cost_usd_est"] = 0.0
-    if pools:  # merge into the existing results; never lose the other pools' records
+    if pools or new_only:  # merge into the existing results; never lose other records
         old = load_json(OUT)
         if not old:
             sys.exit(f"{OUT} not found; run a full compute first")
-        bak = OUT.with_name(f"gradient_check.pre-{'+'.join(sorted(pools))}.json")
+        label = new_only or "+".join(sorted(pools))
+        bak = OUT.with_name(f"gradient_check.pre-{label}.json")
         if not bak.exists():
             shutil.copy2(OUT, bak)
             print(f"backed up {OUT.name} to {bak.name}")
-        kept = {k: v for k, v in old["groups"].items() if v["pool"] not in pools}
-        print(f"merge: kept {len(kept)} records of other pools, replaced "
-              f"{len(old['groups']) - len(kept)} with {len(res['groups'])} new {'+'.join(pools)} records")
+        kept = {k: v for k, v in old["groups"].items() if not (pools and v["pool"] in pools)}
+        clash = set(kept) & set(res["groups"]) if new_only else set()
+        if clash:
+            sys.exit(f"new records clash with earlier ones: {sorted(clash)[:5]}")
+        print(f"merge: kept {len(kept)} earlier records, replaced {len(old['groups']) - len(kept)}, "
+              f"added {len(res['groups'])} new ({label})")
         merged = dict(old, groups={**kept, **res["groups"]})
         merged["partial_recomputes"] = old.get("partial_recomputes", []) + [
-            {"pools": sorted(pools), "elapsed_s": res["elapsed_s"], "hard_norm": res["hard_norm"]}]
+            {"pools": sorted(pools or []), "new_only": new_only or None, "elapsed_s": res["elapsed_s"],
+             "hard_norm": res["hard_norm"]}]
         merged["partial_recomputes"][-1]["cost_usd_est"] = res["cost_usd_est"]
         res, mins, cost = merged, res["elapsed_s"] / 60, res["cost_usd_est"]
     else:
@@ -158,12 +177,15 @@ def main():
     ap.add_argument("command", choices=["compute", "select"])
     ap.add_argument("--runner", default="local", choices=["local", "modal"])
     ap.add_argument("--pools", default="", help="compute only: comma list of pools to redo and merge")
+    ap.add_argument("--new-only", default="", metavar="LABEL", help="compute only: measure only groups without a record")
     args = ap.parse_args()
     pools = [p for p in args.pools.split(",") if p]
     bad = set(pools) - {"related", "conflicting", "guided", "unrelated"}
     if bad:
         sys.exit(f"unknown pools: {sorted(bad)}")
-    compute(args.runner, pools or None) if args.command == "compute" else select()
+    if pools and args.new_only:
+        sys.exit("use --pools or --new-only, not both")
+    compute(args.runner, pools or None, args.new_only) if args.command == "compute" else select()
 
 
 if __name__ == "__main__":

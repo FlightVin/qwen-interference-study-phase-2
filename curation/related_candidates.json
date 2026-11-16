@@ -1902,5 +1902,201 @@
   "problem": "Let $P(n)$ be the number of permutations $(a_{1}, \\ldots, a_{n})$ of $\\{1, \\ldots, n\\}$ for which $k a_{k}$ is a perfect square for all $k$. Find $P(6)$.",
   "answer": "2",
   "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0528-10",
+  "pair_hard_id": "omni-0528",
+  "problem": "How many points with all coordinates in $\\{-1,0,1\\}$ in four-dimensional space are at distance exactly 2 from the point $(1,0,0,0)$?",
+  "answer": "9",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0528-11",
+  "pair_hard_id": "omni-0528",
+  "problem": "How many points with all coordinates in $\\{-1,0,1\\}$ in four-dimensional space are at distance exactly 2 from the point $(1,1,0,0)$?",
+  "answer": "6",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0528-12",
+  "pair_hard_id": "omni-0528",
+  "problem": "Let $S$ be the set of $3^{4}$ points in four-dimensional space with each coordinate in $\\{-1,0,1\\}$. How many sequences $P_{1}, P_{2}, P_{3}$ of points in $S$ satisfy $P_{1}=(0,0,0,0)$ and $P_{1} P_{2}=P_{2} P_{3}=P_{3} P_{1}=2$?",
+  "answer": "64",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1391-10",
+  "pair_hard_id": "omni-1391",
+  "problem": "How many real numbers $x$ with $0 \\leq x<2 \\pi$ satisfy $\\cos ^{2} x+\\sin ^{4} x=\\frac{3}{4}$?",
+  "answer": "4",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1391-11",
+  "pair_hard_id": "omni-1391",
+  "problem": "Find the minimum value of $\\left(\\cos ^{2} x+\\sin ^{4} x\\right)\\left(\\sin ^{2} x+\\cos ^{4} x\\right)$ over all real $x$.",
+  "answer": "\\frac{9}{16}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1391-12",
+  "pair_hard_id": "omni-1391",
+  "problem": "For real $x$ let $u=1+\\cos ^{2} x+\\sin ^{4} x$ and $v=1+\\sin ^{2} x+\\cos ^{4} x$. Find the maximum value of $|u-v|$ over all real $x$.",
+  "answer": "0",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1391-13",
+  "pair_hard_id": "omni-1391",
+  "problem": "Find the minimum value of $\\cos ^{2} x+\\sin ^{4} x+\\sin ^{2} x+\\cos ^{4} x$ over all real $x$.",
+  "answer": "\\frac{3}{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1689-12",
+  "pair_hard_id": "omni-1689",
+  "problem": "How many pairs $(n, k)$ of nonnegative integers satisfy $17 n+23 k=3000$?",
+  "answer": "8",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1689-13",
+  "pair_hard_id": "omni-1689",
+  "problem": "How many pairs $(n, k)$ of nonnegative integers satisfy $19 n+23 k=5000$?",
+  "answer": "11",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1689-14",
+  "pair_hard_id": "omni-1689",
+  "problem": "How many pairs $(n, k)$ of nonnegative integers satisfy $23 n+29 k=6000$?",
+  "answer": "9",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1689-15",
+  "pair_hard_id": "omni-1689",
+  "problem": "How many pairs $(n, k)$ of positive integers satisfy $13 n+17 k=2000$?",
+  "answer": "9",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1814-10",
+  "pair_hard_id": "omni-1814",
+  "problem": "The points $A=\\left(2, \\frac{1}{2}\\right)$ and $B=\\left(-3,-\\frac{1}{3}\\right)$ lie on the hyperbola $x y=1$. The point $X=\\left(x, \\frac{1}{x}\\right)$ with $x>0$ also lies on it, and $\\angle A X B=90^{\\circ}$. Find $x$.",
+  "answer": "\\frac{\\sqrt{6}}{6}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1814-11",
+  "pair_hard_id": "omni-1814",
+  "problem": "The points $A=\\left(2, \\frac{1}{2}\\right)$ and $B=\\left(-5,-\\frac{1}{5}\\right)$ lie on the hyperbola $x y=1$. The point $X=\\left(x, \\frac{1}{x}\\right)$ with $x>0$ also lies on it, and $\\angle A X B=90^{\\circ}$. Find $x$.",
+  "answer": "\\frac{\\sqrt{10}}{10}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1814-12",
+  "pair_hard_id": "omni-1814",
+  "problem": "The points $A=\\left(4, \\frac{1}{4}\\right)$ and $B=\\left(-5,-\\frac{1}{5}\\right)$ lie on the hyperbola $x y=1$. The point $X=\\left(x, \\frac{1}{x}\\right)$ with $x>0$ also lies on it, and $\\angle A X B=90^{\\circ}$. Find $x$.",
+  "answer": "\\frac{\\sqrt{5}}{10}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1900-12",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=1, a_{2}=2$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n \\geq 1$. Find $a_{9}$.",
+  "answer": "\\frac{11}{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1900-13",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=1, a_{2}=3$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n \\geq 1$. Find $a_{8}$.",
+  "answer": "1",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1900-14",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=1, a_{2}=\\frac{1}{2}$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n \\geq 1$. Find $a_{7}$.",
+  "answer": "\\frac{4}{3}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3926-10",
+  "pair_hard_id": "omni-3926",
+  "problem": "For a positive integer $k$ let $f(k)$ be the square of the sum of the digits of $k$. Find the smallest positive integer $k$ with $f(k)=361$.",
+  "answer": "199",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3926-11",
+  "pair_hard_id": "omni-3926",
+  "problem": "For a positive integer $k$ let $f(k)$ be the square of the sum of the digits of $k$. Find the smallest positive integer $k$ with $f(k)=400$.",
+  "answer": "299",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3926-12",
+  "pair_hard_id": "omni-3926",
+  "problem": "For a positive integer $k$ let $f(k)$ be the square of the sum of the digits of $k$. Find the smallest positive integer $k$ with $f(k)=529$.",
+  "answer": "599",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0166-7",
+  "pair_hard_id": "omni-0166",
+  "problem": "Points $A, B, C, D$ in space satisfy $A C=A D=B C=B D=1$ and $A B=\\frac{6}{5}$. Find the largest possible value of $C D$.",
+  "answer": "\\frac{8}{5}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0166-8",
+  "pair_hard_id": "omni-0166",
+  "problem": "Points $A, B, C, D$ in space satisfy $A C=A D=B C=B D=1$ and $A B=\\frac{1}{2}$. Find the largest possible value of $C D$.",
+  "answer": "\\frac{\\sqrt{15}}{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0166-9",
+  "pair_hard_id": "omni-0166",
+  "problem": "Points $A, B, C, D$ in space satisfy $A C=A D=B C=B D=1$. Find the largest possible value of $A B+C D$.",
+  "answer": "2 \\sqrt{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0166-10",
+  "pair_hard_id": "omni-0166",
+  "problem": "A tetrahedron $A B C D$ has $A B=A C=A D=B C=B D=1$. Find the largest possible volume of $A B C D$.",
+  "answer": "\\frac{1}{8}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2584-13",
+  "pair_hard_id": "omni-2584",
+  "problem": "Consider all rectangular boxes with integer side lengths $s_{1} \\leq s_{2} \\leq s_{3}$ such that $s_{1} s_{2}=48$ and $s_{2} s_{3}=240$. Find the sum of all possible values of $s_{3}$.",
+  "answer": "50",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2584-14",
+  "pair_hard_id": "omni-2584",
+  "problem": "Consider all rectangular boxes with integer side lengths $s_{1} \\leq s_{2} \\leq s_{3}$ such that $s_{1} s_{2}=48$ and $s_{2} s_{3}=240$. Find the largest possible value of $s_{1} s_{3}$.",
+  "answer": "180",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2584-15",
+  "pair_hard_id": "omni-2584",
+  "problem": "A rectangular box has integer side lengths. Its largest face has area 240 and its smallest face has area 48. How many such boxes are there (up to the order of the side lengths)?",
+  "answer": "2",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2584-16",
+  "pair_hard_id": "omni-2584",
+  "problem": "A rectangular box has integer side lengths. Its largest face has area 240 and its smallest face has area 48. Find the smallest possible area of its third face.",
+  "answer": "80",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
  }
 ]
