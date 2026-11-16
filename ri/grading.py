@@ -38,9 +38,38 @@ def _parse_gold(gold: str):
     return parse(f"${gold}$")
 
 
+def _strict_numeric_equal(gold_str: str, g_parsed, p_parsed):
+    """Exact check behind Math-Verify for plain numbers. True/False, or None when it cannot decide.
+
+    Math-Verify calls clearly different huge numbers equal: 2^1009/(2^1009+1009) (about 1) and
+    1/(1+2018*2^1009) (about 0) both passed (found 2026-11-15). So when both sides are plain
+    numbers, require exact equality (SymPy) or agreement to 12 significant digits at 60-digit
+    precision; a gold written as a rounded decimal allows 6 digits.
+    """
+    import sympy
+
+    ge = next((x for x in g_parsed if isinstance(x, sympy.Expr)), None)
+    pe = next((x for x in p_parsed if isinstance(x, sympy.Expr)), None)
+    if ge is None or pe is None or ge.free_symbols or pe.free_symbols:
+        return None
+    try:
+        if sympy.simplify(ge - pe) == 0:
+            return True
+    except Exception:
+        pass
+    try:
+        gv, pv = sympy.N(ge, 60), sympy.N(pe, 60)
+        if not (gv.is_finite and pv.is_finite):
+            return None
+        tol = sympy.Float("1e-6" if "." in gold_str else "1e-12", 60)
+        return bool(abs(gv - pv) <= tol * max(sympy.Integer(1), abs(gv)))
+    except Exception:
+        return None
+
+
 @lru_cache(maxsize=500_000)
 def math_correct(gold: str, predicted: str | None) -> bool:
-    """True if predicted (the boxed content) matches gold under Math-Verify."""
+    """True if predicted (the boxed content) matches gold: Math-Verify, then the exact numeric check."""
     if not predicted:
         return False
     from math_verify import parse, verify
@@ -50,7 +79,10 @@ def math_correct(gold: str, predicted: str | None) -> bool:
         p = parse(f"\\boxed{{{predicted}}}")
         if not g or not p:
             return False
-        return bool(verify(g, p))
+        if not verify(g, p):
+            return False
+        strict = _strict_numeric_equal(gold, g, p)
+        return True if strict is None else strict
     except Exception:
         return False
 
