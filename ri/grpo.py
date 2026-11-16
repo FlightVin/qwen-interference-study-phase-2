@@ -238,6 +238,14 @@ class Trainer:
             r = cosines({"gg": s["uu"], "ggc": s["uuc"], "gcgc": s["ucuc"], "gd": s["ud"], "gcd": s["ucd"], "dd": s["dd"]})
             diag["adam"] = {k: r[k] for k in ("cos_comp_H", "cos_hard_H", "cos_comp_hard", "cos_total_H")}
         del g_c
+        if hs["attempts"] == 0:
+            # No hard signal: g_h is exactly 0. g - bf16(g_c) would leave rounding noise (~0.3% of
+            # |g_c|), so report zero and no hard cosines rather than noise.
+            diag.update(norm_hard=0.0, cos_hard_H=None, cos_comp_hard=None)
+            for v in diag["per_layer"].values():
+                v["cos_hard_H"] = None
+            if diag["adam"]:
+                diag["adam"].update(cos_hard_H=None, cos_comp_hard=None)
 
         diag["grad_norm_preclip"] = float(torch.nn.utils.clip_grad_norm_(self.params, 1.0))
         self.opt.step()

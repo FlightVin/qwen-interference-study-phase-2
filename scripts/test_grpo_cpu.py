@@ -134,6 +134,11 @@ dz = t.step([], [{"key": "z", "attempts": [dict(x, correct=False) for x in G[0][
 w1 = torch.cat([p.detach().reshape(-1) for p in t.params])
 check(dz["norm_total"] == 0 and not torch.equal(w0, w1), "zero-signal step: zero gradient, momentum update applied")
 
+# 6b. a step with companion signal but no hard signal reports no hard part (not bf16 noise)
+dn = t.step(G2[2:], [{"key": "z2", "attempts": [dict(x, correct=False) for x in G[1]["attempts"]]}], None)
+check(dn["norm_hard"] == 0.0 and dn["cos_hard_H"] is None and dn["cos_comp_H"] is not None
+      and all(v["cos_hard_H"] is None for v in dn["per_layer"].values()), "no hard signal -> hard part reported as zero")
+
 # 7. hard direction increases the likelihood
 sols = {"hA": [([1, 2, 3], [5, 6, 7, 8])]}
 t2 = fresh()
