@@ -13,9 +13,40 @@ from __future__ import annotations
 import glob
 import gzip
 import json
+import os
 import time
 
 from ri import config
+
+
+# Positions per log-prob chunk. The full float32 logits of one long sequence (151,936 x ~12k) are
+# ~7 GB; chunking with recomputation in backward keeps one chunk alive at a time. Same math.
+# RI_LOGP_CHUNK=0 restores the original whole-sequence computation.
+LOGP_CHUNK = int(os.environ.get("RI_LOGP_CHUNK", "1024"))
+
+
+def seq_logp_mean(model, prompt_ids: list[int], comp_ids: list[int], chunk: int):
+    """Mean log-probability of comp_ids given prompt_ids (differentiable)."""
+    import torch
+    from torch.utils.checkpoint import checkpoint
+
+    dev = next(model.parameters()).device
+    ids = torch.tensor([prompt_ids + comp_ids], device=dev)
+    tgt = ids[0, len(prompt_ids):]
+    if chunk <= 0:
+        logits = model(input_ids=ids).logits[0, len(prompt_ids) - 1 : -1].float()
+        logp = logits.gather(1, tgt[:, None])[:, 0] - torch.logsumexp(logits, dim=1)
+        return logp.mean()
+    hidden = model.model(input_ids=ids).last_hidden_state[0, len(prompt_ids) - 1 : -1]
+
+    def part(h, t):
+        lg = model.lm_head(h).float()
+        return (lg.gather(1, t[:, None])[:, 0] - torch.logsumexp(lg, dim=1)).sum()
+
+    total = 0.0
+    for s in range(0, hidden.shape[0], chunk):
+        total = total + checkpoint(part, hidden[s:s + chunk], tgt[s:s + chunk], use_reentrant=False)
+    return total / hidden.shape[0]
 
 
 class GradCheck:
@@ -39,12 +70,7 @@ class GradCheck:
         return self.tok(s, add_special_tokens=False)["input_ids"]
 
     def _seq_logp_mean(self, prompt_ids: list[int], comp_ids: list[int]):
-        torch = self.torch
-        ids = torch.tensor([prompt_ids + comp_ids], device="cuda")
-        logits = self.model(input_ids=ids).logits[0, len(prompt_ids) - 1 : -1].float()
-        tgt = ids[0, len(prompt_ids):]
-        logp = logits.gather(1, tgt[:, None])[:, 0] - torch.logsumexp(logits, dim=1)
-        return logp.mean()
+        return seq_logp_mean(self.model, prompt_ids, comp_ids, LOGP_CHUNK)
 
     def _zero(self):
         for p in self.params:
