@@ -278,6 +278,20 @@ class Trainer:
         for n, p in self.model.named_parameters():
             yield n, p.detach().to(self.torch.bfloat16)
 
+    def snapshot_cpu(self) -> dict:
+        """Copies of the weights and the optimizer state in CPU memory (a few seconds), so the
+        checkpoint file can be written in the background while training continues."""
+        cp = lambda v: v.detach().to("cpu", copy=True) if hasattr(v, "detach") else v
+        sd = self.opt.state_dict()
+        opt = {"state": {k: {kk: cp(vv) for kk, vv in st.items()} for k, st in sd["state"].items()},
+               "param_groups": [dict(g) for g in sd["param_groups"]]}
+        return {"model": {k: cp(v) for k, v in self.model.state_dict().items()}, "opt": opt}
+
+    def save_snapshot(self, snap: dict, path: str, meta: dict):
+        tmp = path + ".tmp"
+        self.torch.save({"model": snap["model"], "opt": snap["opt"], "meta": meta}, tmp)
+        os.replace(tmp, path)
+
     def save(self, path: str, meta: dict):
         """Atomic: write path + '.tmp', then rename over path."""
         torch = self.torch

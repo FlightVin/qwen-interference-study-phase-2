@@ -148,6 +148,52 @@ def sync_check(sampler, trainer, base_q, label):
     return equal
 
 
+DISK_RESERVE_GB = 30   # never leave less than this free on the shared /data/user_data quota
+LOCK_STALE_S = 600
+
+
+def disk_free_gb(path: Path) -> float:
+    return round(shutil.disk_usage(path).free / 2 ** 30, 1)
+
+
+def write_checkpoint(trainer, ckpt: Path, meta: dict, need_gb: float, snap: dict | None = None) -> str:
+    """Exact checkpoint (fp32 weights + Adam). The shared quota is small (166 GB free on
+    2026-11-16), so: one writer at a time across runs (O_EXCL lock file, stale after 10 min), and
+    skip the write if it would leave less than DISK_RESERVE_GB free. With snap (CPU copies) it
+    writes those; otherwise the live state. Returns what happened."""
+    lock = ckpt.parent.parent / ".ckpt-write.lock"
+    t0 = time.time()
+    while True:
+        try:
+            fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.write(fd, f"{ckpt.parent.name} {time.time()}".encode())
+            os.close(fd)
+            break
+        except FileExistsError:
+            try:
+                if time.time() - lock.stat().st_mtime > LOCK_STALE_S:
+                    lock.unlink(missing_ok=True)
+                    continue
+            except FileNotFoundError:
+                continue
+            if time.time() - t0 > 2 * LOCK_STALE_S:
+                return "skipped: lock busy"
+            time.sleep(10)
+    try:
+        free = disk_free_gb(ckpt.parent)
+        old = ckpt.stat().st_size / 2 ** 30 if ckpt.exists() else 0.0
+        if free - need_gb < DISK_RESERVE_GB:
+            print(f"!! checkpoint skipped: {free} GB free, needs {need_gb:.0f} GB + {DISK_RESERVE_GB} GB reserve", flush=True)
+            return f"skipped: {free} GB free"
+        if snap is not None:
+            trainer.save_snapshot(snap, str(ckpt), meta)
+        else:
+            trainer.save(str(ckpt), meta)
+        return f"round {meta['round']} written in {time.time() - t0:.0f} s ({free} GB free before; replaced {old:.0f} GB)"
+    finally:
+        lock.unlink(missing_ok=True)
+
+
 def gpu_free_gb():
     try:
         import torch
@@ -167,9 +213,10 @@ def main():
     ap.add_argument("--rounds", type=int, default=60)
     ap.add_argument("--eval-rounds", default="30,60")
     ap.add_argument("--base-eval", action="store_true", help="also evaluate the base model (once per study)")
-    ap.add_argument("--ckpt-every", type=int, default=5)
+    ap.add_argument("--ckpt-every", type=int, default=5, help="0: no periodic checkpoints (non-preemptible jobs)")
     ap.add_argument("--dir-every", type=int, default=5)
-    ap.add_argument("--save-weights", default="30,60")
+    ap.add_argument("--save-weights", default="60", help="rounds with a bf16 weight snapshot (plan: 30,60; disk)")
+    ap.add_argument("--keep-ckpt", action="store_true", help="keep the checkpoint after the last round")
     ap.add_argument("--run", default=None)
     ap.add_argument("--smoke", action="store_true", help="GPU smoke test: small evals, weight-sync check")
     ap.add_argument("--fake", action="store_true", help="CPU test: tiny random model, fake sampler")
@@ -219,7 +266,29 @@ def main():
         dir_sols = {k: v[:1] for k, v in list(dir_sols.items())[:4]}
 
     meta_path, ckpt = run_dir / "run.json", run_dir / "ckpt.pt"
+    Path(str(ckpt) + ".tmp").unlink(missing_ok=True)   # half-written by a preempted job
     start = 1
+    import threading
+
+    writer = {"thread": None, "last": None}
+
+    def start_checkpoint(r):
+        """Copy to CPU now, write in the background; skip if the previous write is still running."""
+        if writer["thread"] is not None and writer["thread"].is_alive():
+            return "skipped: previous write still running"
+        snap = trainer.snapshot_cpu()
+        meta = {"round": r, "setup": a.setup, "seed": a.seed, "time": time.time()}
+
+        def job():
+            try:
+                writer["last"] = write_checkpoint(trainer, ckpt, meta, 21.0, snap)
+            except Exception as e:  # never kill training over a checkpoint
+                writer["last"] = f"failed: {e!r}"
+                print(f"!! checkpoint round {r} failed: {e!r}", flush=True)
+
+        writer["thread"] = threading.Thread(target=job, name=f"ckpt-r{r}")
+        writer["thread"].start()
+        return f"round {r} started"
     if ckpt.exists():
         meta = trainer.load(str(ckpt))
         start = meta["round"] + 1
@@ -309,9 +378,10 @@ def main():
         if torch.cuda.is_available():
             torch.cuda.reset_peak_memory_stats()
 
-        if r % a.ckpt_every == 0 or r == a.rounds:
+        ck_note = None
+        if a.ckpt_every > 0 and r % a.ckpt_every == 0 and r < a.rounds:
             tc = time.time()
-            trainer.save(str(ckpt), {"round": r, "setup": a.setup, "seed": a.seed, "time": time.time()})
+            ck_note = start_checkpoint(r)
             T["checkpoint"] = time.time() - tc
         if r in save_rounds:
             trainer.save_bf16(str(run_dir / f"weights_r{r:03d}.safetensors"))
@@ -335,7 +405,8 @@ def main():
                "tokens": {"hard": sum(g["tokens"] for g in hg), "comp": sum(g["tokens"] for g in cg),
                           "zero_signal": sum(g["tokens"] for g in groups if not g["signal"])},
                "groups": groups, "steps": steps, "d_H_round": trainer.d_H_round, "likelihood": lik,
-               "time": {k: round(v, 1) for k, v in T.items()}, "gpu": {"free_gb_after_generate": free_gen, "trainer_peak_gb": peak}}
+               "time": {k: round(v, 1) for k, v in T.items()}, "gpu": {"free_gb_after_generate": free_gen, "trainer_peak_gb": peak},
+               "disk_free_gb": disk_free_gb(run_dir), "checkpoint": ck_note, "checkpoint_last": writer["last"]}
         rec["time"]["round"] = round(time.time() - t0, 1)
         with open(rounds_path, "a") as f:
             f.write(json.dumps(rec) + "\n")
@@ -345,7 +416,8 @@ def main():
         print(f"r{r:03d} hard {rec['hard_success']:.3f} comp {rec['comp_success'] if rec['comp_success'] is not None else '-'} "
               f"| cos(c,H) {cc(s0['cos_comp_H'])} {cc(s1['cos_comp_H'])} cos(h,H) {cc(s0['cos_hard_H'])} {cc(s1['cos_hard_H'])} "
               f"| lik {sum(lik.values()) / len(lik):.4f} | gen {T['generate']:.0f}s train {T['train']:.0f}s "
-              f"sync {T['sync']:.0f}s round {rec['time']['round']:.0f}s | peak {peak} GiB", flush=True)
+              f"sync {T['sync']:.0f}s round {rec['time']['round']:.0f}s | peak {peak} GiB | disk {rec['disk_free_gb']} GB free"
+              + (f" | ckpt {ck_note}" if ck_note else ""), flush=True)
 
         if a.smoke:
             if not sync_check(sampler, trainer, base_q, f"after round {r}"):
@@ -354,6 +426,12 @@ def main():
             evaluate(sampler, d, spec, r, run_dir, out_dir, a.smoke)
 
     sampler.close()
+    if writer["thread"] is not None:
+        writer["thread"].join()
+        print(f"== last checkpoint write: {writer['last']}", flush=True)
+    if start <= a.rounds and not a.keep_ckpt and ckpt.exists():
+        ckpt.unlink()   # the run is complete; its final bf16 weights stay
+        print("== checkpoint removed (run complete)", flush=True)
     print(f"== RUN {run} DONE rounds {start}-{a.rounds} in {(time.time() - t_start) / 60:.1f} min", flush=True)
 
 
