@@ -96,6 +96,11 @@ def main():
         check(sorted(x["pair_hard_id"] for x in it) == sorted(train), f"guided: one per training problem ({len(it)})")
         check(not any(leaks(train[x["pair_hard_id"]]["answer"], x["solution_prefix"]) for x in it),
               "guided: no prefix contains the hard answer")
+        fmt = {x.get("prompt_format", "user_turn") for x in it}
+        rows.append(("INFO", f"guided: prompt format {sorted(fmt)}"))
+        if "assistant_prefix" in fmt:
+            check(all(x.get("assistant_prefix") == x["solution_prefix"] and x["solution_prefix"] not in x["prompt"]
+                      for x in it), "guided: prefix only in the assistant turn, not in the user prompt")
         oob = [x["id"] for x in it if x.get("out_of_band")]
         check(not oob, f"guided: all prefixes in band ({len(oob)} out of band: {oob[:4]})", level="WARN")
         check(all(has_metrics(x, 32) for x in it), "guided metrics present (n=32)")

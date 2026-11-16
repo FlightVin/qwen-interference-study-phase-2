@@ -39,24 +39,27 @@ class Engine:
         )
         self.load_s = time.time() - t0
 
-    def chat(self, user_text: str) -> str:
+    def chat(self, user_text: str, assistant_prefix: str = "") -> str:
+        """Chat prompt in non-thinking mode. A non-empty assistant_prefix (guided items, assistant-turn
+        format, 2026-11-16) is appended after the generation prompt, so the model continues it as
+        the start of its own answer. Sampled tokens and grading cover only the continuation."""
         return self.tok.apply_chat_template(
             [{"role": "user", "content": user_text}],
             tokenize=False,
             add_generation_prompt=True,
             enable_thinking=False,
-        )
+        ) + assistant_prefix
 
     def run(self, job: dict) -> dict:
         """job = {tag, chunk, return_texts: 'correct'|'all'|'none', save_token_ids: bool,
-                  items: [{id, prompt, grader, n, seed}]}"""
+                  items: [{id, prompt, grader, n, seed, assistant_prefix?}]}"""
         from vllm import SamplingParams
 
         from ri.grading import grade_batch
 
         t0 = time.time()
         items = job["items"]
-        prompts = [self.chat(it["prompt"]) for it in items]
+        prompts = [self.chat(it["prompt"], it.get("assistant_prefix", "")) for it in items]
         params = [SamplingParams(n=it["n"], temperature=config.TEMPERATURE, top_p=config.TOP_P,
                                  max_tokens=config.MAX_TOKENS, seed=it["seed"]) for it in items]
         outs = self.llm.generate(prompts, params, use_tqdm=False)

@@ -8,8 +8,15 @@ select:  keeps 2 related companions per hard problem whose cosine is positive in
          companion_related.json and companion_conflicting.json; adds the cosines to the guided and
          unrelated files; checks the pool order conflicting < unrelated < related < guided.
 
-Usage: python scripts/gradient_check.py compute [--runner local|modal] | select
+--pools P1,P2 (compute only) measures only those pools and merges them into the existing
+gradient_check.json: records of the listed pools are replaced, all others stay as they are, and the
+file before the first merge is kept as gradient_check.pre-<pools>.json. Used 2026-11-16 to redo
+guided after its assistant-turn rebuild without touching the related/conflicting records.
+
+Usage: python scripts/gradient_check.py compute [--runner local|modal] [--pools guided] | select
 """
+
+import shutil
 
 import argparse
 import sys
@@ -25,7 +32,7 @@ OUT = config.SCREENING / "gradient_check.json"
 PER_HARD = 2
 
 
-def compute(runner: str):
+def compute(runner: str, pools: list[str] | None = None):
     hard = load_json(config.FINAL / "hard_train.json")["items"]
     groups = []
     for kind in ("related", "conflicting"):
@@ -40,6 +47,8 @@ def compute(runner: str):
     for it in load_json(config.FINAL / "companion_unrelated.json")["items"]:
         groups.append({"id": it["id"], "pool": "unrelated", "pair_hard_id": None,
                        "tags": it["screening"]["raw_tags"]})
+    if pools:
+        groups = [g for g in groups if g["pool"] in pools]
     job = {"hard": [{"id": h["id"], "prompt": math_prompt(h["problem"]),
                      "solutions": h["correct_solutions"]} for h in hard],
            "groups": groups}
@@ -57,8 +66,26 @@ def compute(runner: str):
 
         res = GradCheck().check(job, raw_root=str(config.RAW_OUTPUTS))
         res["cost_usd_est"] = 0.0
+    if pools:  # merge into the existing results; never lose the other pools' records
+        old = load_json(OUT)
+        if not old:
+            sys.exit(f"{OUT} not found; run a full compute first")
+        bak = OUT.with_name(f"gradient_check.pre-{'+'.join(sorted(pools))}.json")
+        if not bak.exists():
+            shutil.copy2(OUT, bak)
+            print(f"backed up {OUT.name} to {bak.name}")
+        kept = {k: v for k, v in old["groups"].items() if v["pool"] not in pools}
+        print(f"merge: kept {len(kept)} records of other pools, replaced "
+              f"{len(old['groups']) - len(kept)} with {len(res['groups'])} new {'+'.join(pools)} records")
+        merged = dict(old, groups={**kept, **res["groups"]})
+        merged["partial_recomputes"] = old.get("partial_recomputes", []) + [
+            {"pools": sorted(pools), "elapsed_s": res["elapsed_s"], "hard_norm": res["hard_norm"]}]
+        merged["partial_recomputes"][-1]["cost_usd_est"] = res["cost_usd_est"]
+        res, mins, cost = merged, res["elapsed_s"] / 60, res["cost_usd_est"]
+    else:
+        mins, cost = res["elapsed_s"] / 60, res["cost_usd_est"]
     save_json(OUT, res)
-    print(f"wrote {OUT}; {res['elapsed_s'] / 60:.1f} min, est. ${res['cost_usd_est']}")
+    print(f"wrote {OUT}; {mins:.1f} min, est. ${cost}")
 
 
 def _cos(rec, key):
@@ -130,8 +157,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("command", choices=["compute", "select"])
     ap.add_argument("--runner", default="local", choices=["local", "modal"])
+    ap.add_argument("--pools", default="", help="compute only: comma list of pools to redo and merge")
     args = ap.parse_args()
-    compute(args.runner) if args.command == "compute" else select()
+    pools = [p for p in args.pools.split(",") if p]
+    bad = set(pools) - {"related", "conflicting", "guided", "unrelated"}
+    if bad:
+        sys.exit(f"unknown pools: {sorted(bad)}")
+    compute(args.runner, pools or None) if args.command == "compute" else select()
 
 
 if __name__ == "__main__":
