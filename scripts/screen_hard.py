@@ -425,7 +425,15 @@ def freeze(args) -> None:
     if len(capable) < config.N_TRAIN:
         sys.exit(f"only {len(capable)} kept problems have a usable guidance prefix; need {config.N_TRAIN}")
     # Matched split: evenly spaced picks over the pass-rate ordering keep the two sets alike.
-    train = capable if len(capable) == config.N_TRAIN else _spread(capable, config.N_TRAIN)
+    # A pinned training set (curation/hard_train_ids.json) wins, so companions written for it stay valid.
+    pinned = load_json(Path(args.train_ids), {}).get("train_ids") if args.train_ids else None
+    if pinned:
+        bad = [c for c in pinned if c not in set(capable)]
+        if bad or len(pinned) != config.N_TRAIN:
+            sys.exit(f"pinned training set invalid: {len(pinned)} ids; not kept or no prefix: {bad}")
+        train = pinned
+    else:
+        train = capable if len(capable) == config.N_TRAIN else _spread(capable, config.N_TRAIN)
     rest = [cid for cid in kept if cid not in set(train)]
     n_held = min(config.N_HELDOUT, len(rest))
     held = rest if len(rest) == n_held else _spread(rest, n_held)
@@ -475,6 +483,7 @@ def main():
     ap.add_argument("--target", type=int, default=0, help="qualified problems to collect (default: config)")
     ap.add_argument("--out", help="output directory (worker-summary, collect, freeze)")
     ap.add_argument("--decisions", help="reading-check decisions JSON (freeze)")
+    ap.add_argument("--train-ids", help="pinned training set JSON with key train_ids (freeze)")
     args = ap.parse_args()
     if args.command == "work":
         if not args.worker:
