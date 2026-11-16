@@ -1,6 +1,6 @@
 """Screen authored companion candidates (related key steps or conflicting lookalikes).
 
-Input: data/authoring/{related,conflicting}_candidates.json, a list of
+Input: curation/{related,conflicting}_candidates.json (in the repo, so it reaches Babel by git), a list of
   {id, pair_hard_id, problem, answer, method_note}
 written from each training hard problem's solution (about 4 per hard problem).
 
@@ -50,7 +50,7 @@ def main():
     args.fake = args.fake or args.runner == "fake"
     final_dir = config.DATA / "fake_final" if args.fake else config.FINAL
     hard = {h["id"]: h for h in load_json(final_dir / "hard_train.json")["items"]}
-    src = config.DATA / ("fake_authoring" if args.fake else "authoring") / f"{args.kind}_candidates.json"
+    src = (config.DATA / "fake_authoring" if args.fake else config.ROOT / "curation") / f"{args.kind}_candidates.json"
     cands = load_json(src)
     if not cands:
         sys.exit(f"{src} not found")
