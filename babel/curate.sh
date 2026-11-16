@@ -30,13 +30,24 @@ print(f"GPU {torch.cuda.get_device_name(0)}: {used:.1f} GiB in use of {total / 2
 sys.exit(3 if used > 2 else 0)
 EOF
 
+# Roles ending in -redo rebuild even if the file exists (the old file is kept once as *.v1.json).
+# A done marker per job makes a requeued job skip a redo it already finished.
+redo() {  # redo <final-name> <script>
+    local f="$RI_DATA/final/$1.json" mark="$RI_DATA/final/.$1.redone-${SLURM_JOB_ID:-local}"
+    [ -f "$mark" ] && return 0
+    [ -f "$f" ] && [ ! -f "$RI_DATA/final/$1.v1.json" ] && cp "$f" "$RI_DATA/final/$1.v1.json"
+    "$PY" "$REPO/scripts/$2" --runner local && touch "$mark"
+}
 for role in "$@"; do
     case "$role" in
         math500)   [ -f "$RI_DATA/final/math500_check.json" ] || "$PY" "$REPO/scripts/build_math500.py" --runner local ;;
         unrelated) [ -f "$RI_DATA/final/companion_unrelated.json" ] || "$PY" "$REPO/scripts/build_unrelated.py" --runner local ;;
+        math500-redo)   redo math500_check build_math500.py ;;
+        unrelated-redo) redo companion_unrelated build_unrelated.py ;;
         *) echo "unknown role: $role" >&2; exit 2 ;;
     esac
 done
+echo "hard-screening target: ${RI_HARD_TARGET:-70} qualified (all workers, all runs)"
 
 "$PY" "$REPO/scripts/screen_hard.py" work --worker "$WORKER" --runner local
 "$PY" "$REPO/scripts/screen_hard.py" worker-summary --worker "$WORKER" --out "$AE_RESULTS"

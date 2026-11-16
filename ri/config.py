@@ -29,7 +29,9 @@ HARD_ROUND_B = 32          # more attempts in round B (64 total)
 HARD_ROUND_C = 64          # more attempts in round C (128 total)
 HARD_KEEP_MIN, HARD_KEEP_MAX = 2, 4      # correct out of 128 to qualify (1.6-3.1%)
 HARD_MAX_TRUNCATION = 0.10               # drop if more than 10% of attempts hit the cap
-HARD_TARGET = 70           # auto-qualified problems to collect (64 needed + margin for the reading check)
+# Qualified problems to collect, counted over ALL workers and runs (64 needed + margin for the reading
+# check). A top-up run raises it at submit time: sbatch --export=ALL,RI_HARD_TARGET=100 ...
+HARD_TARGET = int(os.environ.get("RI_HARD_TARGET", "70"))
 HARD_BUDGET_USD = 25.0     # stop screening at this estimated spend
 TOTAL_DATASET_CAP_USD = 35.0   # whole dataset build, checked against Modal's metered cost
 METERED_STOP_HARD_USD = 27.0   # stop hard screening once Modal's metered month total passes this
