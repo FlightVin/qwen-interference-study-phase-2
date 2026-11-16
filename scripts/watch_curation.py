@@ -68,6 +68,8 @@ def main():
     ap.add_argument("--wm", required=True)
     ap.add_argument("--interval", type=int, default=120)
     ap.add_argument("--max-hours", type=float, default=12)
+    ap.add_argument("--target", type=int, default=TARGET, help="qualified problems that end screening")
+    ap.add_argument("--base", type=int, default=0, help="qualified count when this run started (top-up)")
     a = ap.parse_args()
     wm_path = Path(a.wm)
     wm = json.loads(wm_path.read_text()) if wm_path.exists() else {"states": {}, "mark": 0, "errors": []}
@@ -89,12 +91,21 @@ def main():
             if old is not None and old != st:
                 events.append(f"JOB {name} {old} -> {st}")
             wm["states"][name] = st
-        frac = min(1.0, max(q / TARGET, f / CANDIDATES))
-        mark = int((5 + 55 * frac) // 5) * 5 if (q or f) else 0
-        if mark > wm["mark"]:
-            events.append(f"PROGRESS {mark}% overall | hard screening: {q}/{TARGET} qualified, "
-                          f"{f}/{CANDIDATES} candidates finished")
-            wm["mark"] = mark
+        if a.base:  # top-up run: progress of the top-up itself, in 25% steps
+            frac = min(1.0, max(0.0, (q - a.base) / (a.target - a.base)))
+            mark = int(frac * 100 // 25) * 25
+            key = f"mark_topup_{a.target}"
+            if mark > wm.get(key, 0):
+                events.append(f"PROGRESS top-up {mark}% | {q}/{a.target} qualified "
+                              f"(started at {a.base}), {f}/{CANDIDATES} candidates finished")
+                wm[key] = mark
+        else:
+            frac = min(1.0, max(q / a.target, f / CANDIDATES))
+            mark = int((5 + 55 * frac) // 5) * 5 if (q or f) else 0
+            if mark > wm["mark"]:
+                events.append(f"PROGRESS {mark}% overall | hard screening: {q}/{a.target} qualified, "
+                              f"{f}/{CANDIDATES} candidates finished")
+                wm["mark"] = mark
         for e in errors:
             if e not in wm["errors"]:
                 events.append(f"LOGERR {e[:220]}")
