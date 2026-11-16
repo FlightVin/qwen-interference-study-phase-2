@@ -7,6 +7,8 @@
 #   gradcheck-guided: gradient check of the guided pool only, merged into the existing results
 #   related-topup, conflicting-topup: screen only candidates not screened before (tag = run name);
 #   gradcheck-new: gradient check of records not measured before, merged in
+#   pooltest: GPU self-test of the pool-level check; poolcheck: pool-level gradient check of the
+#   final pools (scripts/pool_gradient_check.py)
 # Example (round 2 of companion screening): bash babel/finish.sh r2 related conflicting gradcheck select
 # A new <run-name> reruns steps that an earlier run already finished (screening is redone from scratch).
 set -euo pipefail
@@ -45,6 +47,8 @@ for s in "$@"; do
         gradcheck-guided) "$PY" "$REPO/scripts/gradient_check.py" compute --runner local --pools guided ;;
         related-topup|conflicting-topup) "$PY" "$REPO/scripts/screen_companions.py" "${s%-topup}" --runner local --only-new "$RUN" ;;
         gradcheck-new) "$PY" "$REPO/scripts/gradient_check.py" compute --runner local --new-only "$RUN" ;;
+        pooltest) "$PY" "$REPO/scripts/pool_gradient_check.py" selftest ;;
+        poolcheck) "$PY" "$REPO/scripts/pool_gradient_check.py" compute ;;
         select)   "$PY" "$REPO/scripts/gradient_check.py" select ;;
         *) echo "unknown step: $s" >&2; exit 2 ;;
     esac
@@ -52,7 +56,7 @@ for s in "$@"; do
     echo "== $(date +%T) done $s"
 done
 
-for f in "$RI_DATA"/final/*.json "$RI_DATA"/screening/*_screened.json; do
+for f in "$RI_DATA"/final/*.json "$RI_DATA"/screening/*_screened.json "$RI_DATA"/screening/pool_gradient_check.json; do
     [ -f "$f" ] && gzip -c "$f" > "$AE_RESULTS/$(basename "$f").gz"
 done
 ls -la "$AE_RESULTS"

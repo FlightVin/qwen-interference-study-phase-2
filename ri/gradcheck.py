@@ -188,3 +188,109 @@ class GradCheck:
                 measure(g, None)
         self._zero()
         return {"groups": out, "hard_norm": hard_norm, "elapsed_s": time.time() - t0}
+
+    # ---- Pool-level check (2026-11-16) ------------------------------------------------------------
+    # Single-group directions proved mostly noise (split-half cosine 0.02-0.08). A pool's update is
+    # the sum of its groups' GRPO gradients, as in a training batch; summing averages the noise out.
+    # Each pool is summed twice, once per independent attempt set, so cos(G1, G2) measures how
+    # reproducible the pool direction is. Accumulators are fp32; finished sums are stored in bf16.
+
+    def _acc_add(self, acc, g, w: float = 1.0):
+        if acc is None:
+            return [x.float() * w if x is not None else None for x in g]
+        for a, x in zip(acc, g):
+            if a is not None and x is not None:
+                a.add_(x, alpha=w)
+        return acc
+
+    def _pair_sum(self, s, g):  # sum of at most two groups (one hard problem's companions), bf16
+        return g if s is None else [a + b if a is not None and b is not None else None for a, b in zip(s, g)]
+
+    def _store(self, acc):
+        return None if acc is None else [a.to(self.torch.bfloat16) if a is not None else None for a in acc]
+
+    def pool_check(self, job: dict, raw_root: str, n_attempts: int = 16) -> dict:
+        """job = {hard: [{id, prompt, solutions}],
+                  pools: {name: [{id, pair_hard_id|None, tags: [set1_tag, set2_tag]}]}}
+        Returns, per pool: per-set norm and group counts, dot(G1, G2), t[h] = <G_s, d_h>/|d_h| for
+        every hard problem, and for paired pools the cosine of each problem's own companions (summed)
+        with its direction, per set; plus |d_h| and |H| with H = sum_h d_h/|d_h|."""
+        t0 = time.time()
+        pools = job["pools"]
+        raw = self.load_groups(raw_root, sorted({t for its in pools.values() for it in its for t in it["tags"]}))
+        for name, its in pools.items():
+            for it in its:
+                for tag in it["tags"]:
+                    n = len(raw.get((tag, it["id"]), []))
+                    if n != n_attempts:
+                        raise ValueError(f"{name} {it['id']} {tag}: {n} attempts, expected {n_attempts}")
+
+        hard_norm, H = {}, None
+        for h in job["hard"]:  # pass 1: |H|
+            d = self._hard_direction(h["prompt"], h["solutions"])
+            self._zero()
+            hard_norm[h["id"]] = self._norm(d)
+            H = self._acc_add(H, d, 1.0 / hard_norm[h["id"]])
+            del d
+        out = {"hard_norm": hard_norm, "H_norm": self._norm(H), "pools": {}}
+        del H
+
+        for name, its in pools.items():
+            paired = any(it.get("pair_hard_id") for it in its)
+            res = {"n_items": len(its), "paired": paired, "sets": [], "items": {it["id"]: [None, None] for it in its}}
+            stored = []
+            for s in (0, 1):
+                acc, used, nosig, pc = None, 0, 0, {}
+
+                def take(it, d=None, nd=None):
+                    nonlocal acc, used, nosig
+                    g = self._group_direction(raw[(it["tags"][s], it["id"])])
+                    self._zero()
+                    if g is None:
+                        nosig += 1
+                        return None
+                    used += 1
+                    ng = self._norm(g)
+                    res["items"][it["id"]][s] = {"norm": ng, **({"cos_own": self._dot(g, d) / (ng * nd)} if d is not None else {})}
+                    acc = self._acc_add(acc, g)
+                    return g
+
+                if paired:
+                    for h in job["hard"]:
+                        mine = [it for it in its if it.get("pair_hard_id") == h["id"]]
+                        if not mine:
+                            continue
+                        d = self._hard_direction(h["prompt"], h["solutions"])
+                        self._zero()
+                        nd, S = self._norm(d), None
+                        for it in mine:
+                            g = take(it, d, nd)
+                            if g is not None:
+                                S = self._pair_sum(S, g)
+                            del g
+                        if S is not None:
+                            pc[h["id"]] = self._dot(S, d) / (self._norm(S) * nd)
+                        del S, d
+                else:
+                    for it in its:
+                        take(it)
+                stored.append(self._store(acc))
+                del acc
+                res["sets"].append({"used": used, "no_signal": nosig,
+                                    "norm": self._norm(stored[s]) if stored[s] is not None else None,
+                                    "paired_cos": pc})
+            res["dot_12"] = self._dot(stored[0], stored[1]) if None not in stored else None
+            res["t"] = {}
+            for h in job["hard"]:  # pass B: project each set's pool sum on every hard direction
+                d = self._hard_direction(h["prompt"], h["solutions"])
+                self._zero()
+                nd = self._norm(d)
+                res["t"][h["id"]] = [self._dot(G, d) / nd if G is not None else None for G in stored]
+                del d
+            del stored
+            out["pools"][name] = res
+            print(f"  pool {name}: {res['sets'][0]['used']}+{res['sets'][1]['used']} groups, "
+                  f"{(time.time() - t0) / 60:.1f} min", flush=True)
+        self._zero()
+        out["elapsed_s"] = time.time() - t0
+        return out
