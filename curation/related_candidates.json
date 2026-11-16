@@ -1,0 +1,898 @@
+[
+ {
+  "id": "rel-omni-0793-1",
+  "pair_hard_id": "omni-0793",
+  "problem": "Compute $\\varphi(2001)$, where $\\varphi$ is Euler's totient function.",
+  "answer": "1232",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0793-2",
+  "pair_hard_id": "omni-0793",
+  "problem": "Write $2002^{2}-1$ as a product of two positive integers that differ by 2. What is the smaller one?",
+  "answer": "2001",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0793-3",
+  "pair_hard_id": "omni-0793",
+  "problem": "Define $\\varphi^{k}(n)$ as the number of positive integers that are at most $n / k$ and relatively prime to $n$. Compute $\\varphi^{5}(35)$.",
+  "answer": "5",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0793-4",
+  "pair_hard_id": "omni-0793",
+  "problem": "How many positive integers $m \\leq 2003$ are relatively prime to 2001?",
+  "answer": "1234",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1735-1",
+  "pair_hard_id": "omni-1735",
+  "problem": "A fair 6-sided die is rolled 3 times. What is the probability that the three results are strictly increasing?",
+  "answer": "\\frac{5}{54}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1735-2",
+  "pair_hard_id": "omni-1735",
+  "problem": "Compute $\\sum_{k=0}^{4} \\binom{4}{k} \\frac{1}{4^{k}}$.",
+  "answer": "\\frac{625}{256}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1735-3",
+  "pair_hard_id": "omni-1735",
+  "problem": "To the nearest integer, what is $1000\\left(1+\\frac{1}{10}\\right)^{10}$?",
+  "answer": "2594",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1735-4",
+  "pair_hard_id": "omni-1735",
+  "problem": "We roll a fair die with faces $1,2,\\ldots,n$. What is the probability that $k$ rolls come out strictly increasing, for $n=10$ and $k=4$?",
+  "answer": "\\frac{21}{1000}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1814-1",
+  "pair_hard_id": "omni-1814",
+  "problem": "Find the slope of the line through the points $\\left(2, \\frac{1}{2}\\right)$ and $\\left(5, \\frac{1}{5}\\right)$.",
+  "answer": "- \\frac{1}{10}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1814-2",
+  "pair_hard_id": "omni-1814",
+  "problem": "Find the positive number $x$ for which the line through $\\left(2, \\frac{1}{2}\\right)$ and $\\left(x, \\frac{1}{x}\\right)$ is perpendicular to the line through $\\left(-3,-\\frac{1}{3}\\right)$ and $\\left(x, \\frac{1}{x}\\right)$.",
+  "answer": "\\frac{\\sqrt{6}}{6}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1814-3",
+  "pair_hard_id": "omni-1814",
+  "problem": "Compute the distance between the points $\\left(\\sqrt{6}, \\frac{1}{\\sqrt{6}}\\right)$ and $\\left(-\\sqrt{6},-\\frac{1}{\\sqrt{6}}\\right)$.",
+  "answer": "\\frac{\\sqrt{222}}{3}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1814-4",
+  "pair_hard_id": "omni-1814",
+  "problem": "The point $P=(1, y)$ with $y>0$ lies on the circle with diameter $AB$, where $A=(0,0)$ and $B=(4,0)$. Find $y$.",
+  "answer": "\\sqrt{3}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2140-1",
+  "pair_hard_id": "omni-2140",
+  "problem": "Factor $x^{6}+6 x^{3}-216$ as a product of two cubic polynomials with integer coefficients. What is the constant term of the factor whose constant term is positive?",
+  "answer": "18",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2140-2",
+  "pair_hard_id": "omni-2140",
+  "problem": "Compute $\\sqrt[3]{12} \\cdot \\sqrt[3]{18}$.",
+  "answer": "6",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2140-3",
+  "pair_hard_id": "omni-2140",
+  "problem": "A triangle has two sides of lengths 2 and 3 with a $60^{\\circ}$ angle between them. Find its area.",
+  "answer": "\\frac{3 \\sqrt{3}}{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2140-4",
+  "pair_hard_id": "omni-2140",
+  "problem": "The three roots of $z^{3}=8$ form a triangle in the complex plane. Find its area.",
+  "answer": "3 \\sqrt{3}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2430-1",
+  "pair_hard_id": "omni-2430",
+  "problem": "Find the smallest integer $n$ such that $3^{n+1}-3^{n}>2018$.",
+  "answer": "7",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2430-2",
+  "pair_hard_id": "omni-2430",
+  "problem": "Find the smallest integer $n$ such that $2^{n+1}-2^{n}>2018$.",
+  "answer": "11",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2430-3",
+  "pair_hard_id": "omni-2430",
+  "problem": "Find the largest positive integer $b$ such that $b^{2}-b \\leq 2018$.",
+  "answer": "45",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2430-4",
+  "pair_hard_id": "omni-2430",
+  "problem": "Find the smallest positive integer $m$ such that none of $\\log _{2}(m), \\log _{2}(m+1), \\ldots, \\log _{2}(m+10)$ is an integer.",
+  "answer": "17",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0962-1",
+  "pair_hard_id": "omni-0962",
+  "problem": "A fair coin is flipped repeatedly (1 for heads, 0 for tails). What is the probability that the sequence 11 appears before the sequence 01?",
+  "answer": "\\frac{1}{4}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0962-2",
+  "pair_hard_id": "omni-0962",
+  "problem": "A fair coin is flipped repeatedly (1 for heads, 0 for tails). What is the probability that the sequence 110 appears before the sequence 100?",
+  "answer": "\\frac{2}{3}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0962-3",
+  "pair_hard_id": "omni-0962",
+  "problem": "A fair coin is flipped repeatedly (1 for heads, 0 for tails). What is the probability that the sequence 101 appears before the sequence 011?",
+  "answer": "\\frac{1}{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0962-4",
+  "pair_hard_id": "omni-0962",
+  "problem": "A fair coin is flipped repeatedly (1 for heads, 0 for tails). What is the probability that the sequence 0101 appears before the sequence 1011?",
+  "answer": "\\frac{9}{14}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0528-1",
+  "pair_hard_id": "omni-0528",
+  "problem": "Let $F_{1}=F_{2}=1$ and $F_{n}=F_{n-1}+F_{n-2}$. Find the largest integer $n$ such that $2^{n}$ divides $F_{24}$.",
+  "answer": "5",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0528-2",
+  "pair_hard_id": "omni-0528",
+  "problem": "Let $F_{1}=F_{2}=1$ and $F_{n}=F_{n-1}+F_{n-2}$. Find the remainder when $F_{2019}$ is divided by 4.",
+  "answer": "2",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0528-3",
+  "pair_hard_id": "omni-0528",
+  "problem": "Let $a_{0}=1, a_{1}=4$, and $a_{i}=4 a_{i-1}+16 a_{i-2}$ for $i \\geq 2$. Compute $\\frac{a_{6}}{4^{6}}$.",
+  "answer": "13",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0528-4",
+  "pair_hard_id": "omni-0528",
+  "problem": "How many points with all coordinates in $\\{-1,0,1\\}$ in four-dimensional space are at distance exactly 2 from the origin?",
+  "answer": "16",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0596-1",
+  "pair_hard_id": "omni-0596",
+  "problem": "Find the distance from the point $(1,1)$ to the line $6 x+8 y=48$.",
+  "answer": "\\frac{17}{5}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0596-2",
+  "pair_hard_id": "omni-0596",
+  "problem": "Find the area of the triangle with vertices $(1,2),(0,-3)$, and $(-2,0)$.",
+  "answer": "\\frac{13}{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0596-3",
+  "pair_hard_id": "omni-0596",
+  "problem": "A point $P=(a, b)$ lies inside the triangle with vertices $(0,0),(4,0),(0,3)$. If $P=\\left(1, \\frac{1}{2}\\right)$, find the distance from $P$ to the side joining $(4,0)$ and $(0,3)$.",
+  "answer": "\\frac{7}{5}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0596-4",
+  "pair_hard_id": "omni-0596",
+  "problem": "A map sends each point $(a, b)$ to $(1+2 a, 1+3 b)$. Find the area of the image of the triangle with vertices $(0,0),(1,0),(0,1)$.",
+  "answer": "3",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1877-1",
+  "pair_hard_id": "omni-1877",
+  "problem": "Let $A B X$ be a triangle with $A B=20$. Through $X$ draw the line parallel to $A B$. The ray $X B$ bisects the angle between ray $X A$ and the half of this parallel line on the same side of line $A X$ as $B$. Find $A X$.",
+  "answer": "20",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1877-2",
+  "pair_hard_id": "omni-1877",
+  "problem": "Points $K, A, C$ form a nondegenerate triangle with $K A=20 x$, $K C=18 x$ and $A C=38$, where $x>1$ is real. Find the least number $M$ such that $x<M$ for every such triangle.",
+  "answer": "19",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1877-3",
+  "pair_hard_id": "omni-1877",
+  "problem": "Let $x$ be a real number with $1<x<16$. Find the largest integer value taken by $30-\\frac{30}{x}$.",
+  "answer": "28",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1877-4",
+  "pair_hard_id": "omni-1877",
+  "problem": "In triangle $K A C$, point $X$ lies on segment $K A$ and point $Y$ lies on segment $K C$ with $X Y \\parallel A C$. If $K A=50$, $X A=20$ and $A C=38$, find $X Y$.",
+  "answer": "\\frac{114}{5}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0757-1",
+  "pair_hard_id": "omni-0757",
+  "problem": "What is the maximum number of bishops that can be placed on a $6 \\times 6$ chessboard so that no two bishops attack each other?",
+  "answer": "10",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0757-2",
+  "pair_hard_id": "omni-0757",
+  "problem": "How many ways are there to place 6 bishops on a $4 \\times 4$ chessboard so that no two bishops attack each other?",
+  "answer": "16",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0757-3",
+  "pair_hard_id": "omni-0757",
+  "problem": "Label the squares of a $6 \\times 6$ chessboard $(x, y)$ with $1 \\leq x, y \\leq 6$. What is the maximum number of bishops that can be placed on squares with $x+y$ odd so that no two attack each other?",
+  "answer": "5",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0757-4",
+  "pair_hard_id": "omni-0757",
+  "problem": "Label the squares of a $6 \\times 6$ chessboard $(x, y)$ with $1 \\leq x, y \\leq 6$. In how many ways can 5 bishops be placed on squares with $x+y$ odd so that no two attack each other?",
+  "answer": "8",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1299-1",
+  "pair_hard_id": "omni-1299",
+  "problem": "Two rays in the plane do not overlap. What is the maximum number of points in which they can intersect?",
+  "answer": "1",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1299-2",
+  "pair_hard_id": "omni-1299",
+  "problem": "A $C$-shape is a figure consisting of two rays pointing in the same direction together with a line segment perpendicular to both rays whose endpoints are the endpoints of the rays. What is the maximum number of points in which a $C$-shape and a ray can intersect, if they do not overlap?",
+  "answer": "2",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1299-3",
+  "pair_hard_id": "omni-1299",
+  "problem": "A $C$-shape is a figure consisting of two rays pointing in the same direction together with a line segment perpendicular to both rays whose endpoints are the endpoints of the rays. What is the maximum number of points in which two $C$-shapes can intersect, if they do not overlap?",
+  "answer": "6",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1299-4",
+  "pair_hard_id": "omni-1299",
+  "problem": "What is the maximum number of points in which the boundaries of two triangles in the plane can intersect, if no two sides overlap?",
+  "answer": "6",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0848-1",
+  "pair_hard_id": "omni-0848",
+  "problem": "Find the area of a triangle with two sides of lengths 5 and 9 and an included angle of $120^{\\circ}$.",
+  "answer": "\\frac{45 \\sqrt{3}}{4}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0848-2",
+  "pair_hard_id": "omni-0848",
+  "problem": "Point $M$ satisfies $M A=3$, $M B=4$, $M C=5$, $\\angle A M B=\\angle B M C=60^{\\circ}$ and $\\angle A M C=120^{\\circ}$. Find the area of triangle $A B C$.",
+  "answer": "\\frac{17 \\sqrt{3}}{4}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0848-3",
+  "pair_hard_id": "omni-0848",
+  "problem": "Segments $A D$ and $B E$ share a common midpoint and form a $60^{\\circ}$ angle. If $A D=6$ and $B E=8$, find the area of quadrilateral $A B D E$.",
+  "answer": "12 \\sqrt{3}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0848-4",
+  "pair_hard_id": "omni-0848",
+  "problem": "Let $A D, B E$, and $C F$ be segments sharing a common midpoint, such that each pair of segments forms a $60^{\\circ}$ angle and $A, B, C, D, E, F$ are in order around the midpoint. If $A D=4, B E=6$, and $C F=8$, find the area of hexagon $A B C D E F$.",
+  "answer": "13 \\sqrt{3}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1590-1",
+  "pair_hard_id": "omni-1590",
+  "problem": "Let $f(n)=\\left\\lceil\\frac{3 n}{4}\\right\\rceil-\\left\\lfloor\\frac{4 n}{5}\\right\\rfloor$. There is a constant $c$ such that $f(n+20)=f(n)+c$ for every integer $n$. Find $c$.",
+  "answer": "-1",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1590-2",
+  "pair_hard_id": "omni-1590",
+  "problem": "Find the number of integers $n$ such that $1+\\left\\lfloor\\frac{n}{3}\\right\\rfloor=\\left\\lceil\\frac{n}{2}\\right\\rceil$.",
+  "answer": "6",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1590-3",
+  "pair_hard_id": "omni-1590",
+  "problem": "Find the number of integers $n$ such that $1+\\left\\lfloor\\frac{4 n}{5}\\right\\rfloor=\\left\\lceil\\frac{3 n}{4}\\right\\rceil$.",
+  "answer": "20",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1590-4",
+  "pair_hard_id": "omni-1590",
+  "problem": "Find the number of integers $n$ with $0 \\leq n<12$ such that $\\left\\lceil\\frac{n}{3}\\right\\rceil=\\left\\lfloor\\frac{n}{4}\\right\\rfloor+1$.",
+  "answer": "8",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0912-1",
+  "pair_hard_id": "omni-0912",
+  "problem": "Let $\\mathcal{P}$ be the set of all proper subsets of $\\{\\mathrm{S}, \\mathrm{T}\\}$. How many subsets does $\\mathcal{P}$ have?",
+  "answer": "8",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0912-2",
+  "pair_hard_id": "omni-0912",
+  "problem": "How many ordered pairs $(X, Y)$ of subsets of $\\{1,2,3\\}$ are there such that $X$ is not a proper subset of $Y$ and $Y$ is not a proper subset of $X$?",
+  "answer": "26",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0912-3",
+  "pair_hard_id": "omni-0912",
+  "problem": "How many ordered pairs $(U, V)$, with $U$ and $V$ each one of the sets $\\varnothing,\\{\\mathrm{S}\\},\\{\\mathrm{T}\\}$ (possibly equal), are there such that $U$ is not a proper subset of $V$ and $V$ is not a proper subset of $U$?",
+  "answer": "5",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0912-4",
+  "pair_hard_id": "omni-0912",
+  "problem": "How many subsets of $\\{\\varnothing,\\{\\mathrm{S}\\},\\{\\mathrm{T}\\}\\}$ contain no two sets such that one is a proper subset of the other?",
+  "answer": "5",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1315-1",
+  "pair_hard_id": "omni-1315",
+  "problem": "Stacy plays a lottery that doubles her money and then spends 1024 dollars in a shop. Afterwards she has no money left. How much money did she have before the lottery?",
+  "answer": "512",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1315-2",
+  "pair_hard_id": "omni-1315",
+  "problem": "Stacy has $d$ dollars. She enters a mall with 2 shops and a lottery stall. First she goes to the lottery and her money is doubled, then she goes into the first shop and spends 1024 dollars. After that she alternates playing the lottery and getting her money doubled (Stacy always wins) then going into a new shop and spending 1024 dollars. When she comes out of the last shop she has no money left. What is the minimum possible value of $d$?",
+  "answer": "768",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1315-3",
+  "pair_hard_id": "omni-1315",
+  "problem": "Stacy has $d$ dollars. She enters a mall with 3 shops and a lottery stall. First she goes to the lottery and her money is doubled, then she goes into the first shop and spends 1024 dollars. After that she alternates playing the lottery and getting her money doubled (Stacy always wins) then going into a new shop and spending 1024 dollars. When she comes out of the last shop she has no money left. What is the minimum possible value of $d$?",
+  "answer": "896",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1315-4",
+  "pair_hard_id": "omni-1315",
+  "problem": "Stacy has $d$ dollars. She enters a mall with 6 shops and a lottery stall. First she goes to the lottery and her money is doubled, then she goes into the first shop and spends 64 dollars. After that she alternates playing the lottery and getting her money doubled (Stacy always wins) then going into a new shop and spending 64 dollars. When she comes out of the last shop she has no money left. What is the minimum possible value of $d$?",
+  "answer": "63",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2082-1",
+  "pair_hard_id": "omni-2082",
+  "problem": "Let $A B C$ be a triangle with $A B=13, B C=14$, and $C A=15$. Let $D$ be the foot of the altitude from $A$ to $B C$. Find $A D$.",
+  "answer": "12",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2082-2",
+  "pair_hard_id": "omni-2082",
+  "problem": "Let $A B C$ be a triangle with $A B=13, B C=14$, and $C A=15$. Let $D$ be the foot of the altitude from $A$ to $B C$. Find $B D$.",
+  "answer": "5",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2082-3",
+  "pair_hard_id": "omni-2082",
+  "problem": "Find the inradius of a right triangle with legs 9 and 12.",
+  "answer": "3",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2082-4",
+  "pair_hard_id": "omni-2082",
+  "problem": "An isosceles right triangle has hypotenuse 6. Find its area.",
+  "answer": "9",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2543-1",
+  "pair_hard_id": "omni-2543",
+  "problem": "Let $r_{1}, \\ldots, r_{5}$ be the complex roots of $x^{5}-2$. Compute $\\prod_{i=1}^{5}\\left(1+r_{i}\\right)$.",
+  "answer": "3",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2543-2",
+  "pair_hard_id": "omni-2543",
+  "problem": "Let $r_{1}, \\ldots, r_{7}$ be the complex roots of $x^{7}-7$. Compute $r_{1} r_{2} \\cdots r_{7}$.",
+  "answer": "7",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2543-3",
+  "pair_hard_id": "omni-2543",
+  "problem": "Let $r_{1}, r_{2}, r_{3}$ be the complex roots of $x^{3}-2$. Compute $\\prod_{i=1}^{3} \\prod_{j=1}^{3}\\left(r_{i}+r_{j}\\right)$, the product over all ordered pairs $(i, j)$, including $i=j$.",
+  "answer": "64",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2543-4",
+  "pair_hard_id": "omni-2543",
+  "problem": "Let $r_{1}, \\ldots, r_{5}$ be the distinct complex roots of $x^{5}-2$, and let $K=\\prod_{1 \\leq i<j \\leq 5}\\left(r_{i}+r_{j}\\right)$. Determine $K^{2}$.",
+  "answer": "16",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2584-1",
+  "pair_hard_id": "omni-2584",
+  "problem": "How many ordered pairs $(s, t)$ of positive integers with $s \\leq t$ satisfy $s t=48$?",
+  "answer": "5",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2584-2",
+  "pair_hard_id": "omni-2584",
+  "problem": "A rectangular box has faces of areas 48, 240 and 80. Find its volume.",
+  "answer": "960",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2584-3",
+  "pair_hard_id": "omni-2584",
+  "problem": "How many triples $(s_{1}, s_{2}, s_{3})$ of positive integers with $s_{1} \\leq s_{2} \\leq s_{3}$ satisfy $s_{1} s_{2}=48$ and $s_{2} s_{3}=240$?",
+  "answer": "2",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2584-4",
+  "pair_hard_id": "omni-2584",
+  "problem": "The faces of a rectangular box have areas 24, 32 and 48. Find the sum of the three edge lengths of the box.",
+  "answer": "18",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2215-1",
+  "pair_hard_id": "omni-2215",
+  "problem": "A monic polynomial $Q$ of degree 4 has roots 5, 11 and 17, and the coefficient of $x^{3}$ in $Q(x)$ is $-29$. Find the fourth root of $Q$.",
+  "answer": "-4",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2215-2",
+  "pair_hard_id": "omni-2215",
+  "problem": "Compute $(1-5)(1-11)(1-17)(1+4)$.",
+  "answer": "-3200",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2215-3",
+  "pair_hard_id": "omni-2215",
+  "problem": "Let $P(x)=x^{3}+a x^{2}+b x+c$ with $P(1)=2, P(2)=3$, and $P(3)=4$. Find $P(4)$.",
+  "answer": "11",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2215-4",
+  "pair_hard_id": "omni-2215",
+  "problem": "Find the sum of the coefficients of the polynomial $P(x)=(x-2)(x-3)(x+1)(x-4)+x$.",
+  "answer": "-11",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2546-1",
+  "pair_hard_id": "omni-2546",
+  "problem": "A line through a point $Q$ meets a circle at $A$ and $B$, with $Q A<Q B$ and $A B=10$. The tangent segment from $Q$ to the circle has length 12. Find $Q A$.",
+  "answer": "8",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2546-2",
+  "pair_hard_id": "omni-2546",
+  "problem": "A line through a point $Q$ meets a circle at $C$ and $D$, with $Q C<Q D$ and $C D=7$. The tangent segment from $Q$ to the circle has length 12. Find $Q C$.",
+  "answer": "9",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2546-3",
+  "pair_hard_id": "omni-2546",
+  "problem": "Points $A$ and $B$ lie on one ray from $Q$, and points $C$ and $D$ lie on another ray from $Q$, with $Q A=4, Q B=18, Q C=6$, and $Q D=12$. Find $\\frac{A D}{B C}$.",
+  "answer": "\\frac{2}{3}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2546-4",
+  "pair_hard_id": "omni-2546",
+  "problem": "The tangent segment from a point $Q$ to a circle has length 6. A line through $Q$ meets the circle at $A$ and $B$ with $Q A=4$ and $Q A<Q B$. Find $A B$.",
+  "answer": "5",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1362-1",
+  "pair_hard_id": "omni-1362",
+  "problem": "The Fibonacci sequence is defined by $F_{0}=0, F_{1}=1$, and $F_{n}=F_{n-1}+F_{n-2}$ for $n \\geq 2$. Find the smallest positive integer $m$ such that $F_{m} \\equiv 0(\\bmod 7)$ and $F_{m+1} \\equiv 1(\\bmod 7)$.",
+  "answer": "16",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1362-2",
+  "pair_hard_id": "omni-1362",
+  "problem": "The Fibonacci sequence is defined by $F_{0}=0, F_{1}=1$, and $F_{n}=F_{n-1}+F_{n-2}$ for $n \\geq 2$. Find the smallest positive integer $m$ such that $F_{m} \\equiv 0(\\bmod 3)$ and $F_{m+1} \\equiv 1(\\bmod 3)$.",
+  "answer": "8",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1362-3",
+  "pair_hard_id": "omni-1362",
+  "problem": "The Fibonacci sequence is defined by $F_{0}=0, F_{1}=1$, and $F_{n}=F_{n-1}+F_{n-2}$ for $n \\geq 2$. Find the remainder when $F_{127}$ is divided by 127.",
+  "answer": "126",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1362-4",
+  "pair_hard_id": "omni-1362",
+  "problem": "The Fibonacci sequence is defined by $F_{0}=0, F_{1}=1$, and $F_{n}=F_{n-1}+F_{n-2}$ for $n \\geq 2$. Find the remainder when $F_{13}$ is divided by 13.",
+  "answer": "12",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2207-1",
+  "pair_hard_id": "omni-2207",
+  "problem": "How many sequences of integers $g_{1}>g_{2}>g_{3}$ have every term in $\\{-2,-1,0,1,2\\}$?",
+  "answer": "10",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2207-2",
+  "pair_hard_id": "omni-2207",
+  "problem": "How many functions $f:\\{1,2,3,4\\} \\rightarrow\\{1,2,3,4\\}$ satisfy $f(j)<f(i)+j-i$ for all integers $i, j$ such that $1 \\leq i<j \\leq 4$?",
+  "answer": "35",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2207-3",
+  "pair_hard_id": "omni-2207",
+  "problem": "How many strictly increasing functions $f:\\{1,2,3\\} \\rightarrow\\{1,2, \\ldots, 8\\}$ are there?",
+  "answer": "56",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2207-4",
+  "pair_hard_id": "omni-2207",
+  "problem": "Let $f:\\{1,2,3,4,5\\} \\rightarrow\\{1,2,3,4,5\\}$ be any function and let $g(i)=f(i)-i$. How many different values can $g(3)$ take?",
+  "answer": "5",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1689-1",
+  "pair_hard_id": "omni-1689",
+  "problem": "How many pairs $(n, k)$ of nonnegative integers satisfy $9 n+11 k=198$?",
+  "answer": "3",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1689-2",
+  "pair_hard_id": "omni-1689",
+  "problem": "Find the smallest nonnegative integer $n$ such that $2007-9 n$ is divisible by 11.",
+  "answer": "3",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1689-3",
+  "pair_hard_id": "omni-1689",
+  "problem": "How many integers $n$ with $0 \\leq n \\leq 100$ satisfy $n \\equiv 3(\\bmod 11)$?",
+  "answer": "9",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1689-4",
+  "pair_hard_id": "omni-1689",
+  "problem": "A student was counting his stones by 7. He messed up $n$ times and instead counted 5s and wound up at 100. How many values of $n$ are possible?",
+  "answer": "3",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2600-1",
+  "pair_hard_id": "omni-2600",
+  "problem": "An isosceles triangle has base 1 and area $\\frac{1}{2}$. Its apex angle is $2 \\theta$. Find $\\tan \\theta$.",
+  "answer": "\\frac{1}{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2600-2",
+  "pair_hard_id": "omni-2600",
+  "problem": "If $\\tan \\theta=\\frac{1}{2}$, find $\\sin 2 \\theta$.",
+  "answer": "\\frac{4}{5}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2600-3",
+  "pair_hard_id": "omni-2600",
+  "problem": "Let $A B C D E F G H$ be an equilateral octagon such that $A C E G$ is a square of side 1 and $\\angle B=\\angle D=\\angle F=\\angle H=90^{\\circ}$, with $B, D, F, H$ outside the square. Find the area of the octagon.",
+  "answer": "2",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-2600-4",
+  "pair_hard_id": "omni-2600",
+  "problem": "An isosceles triangle has base 2 and area 3. Find the sine of its apex angle.",
+  "answer": "\\frac{3}{5}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1346-1",
+  "pair_hard_id": "omni-1346",
+  "problem": "A cafe has 2 tables and 3 individual counter seats. People enter in groups of size between 1 and 4, inclusive, and groups never share a table. A group of more than 1 will always try to sit at a table, but will sit in counter seats if no tables are available. Conversely, a group of 1 will always try to sit at the counter first. One morning, $M$ groups consisting of a total of $N$ people enter and sit down. Then, a single person walks in, and realizes that all the tables and counter seats are occupied by some person or group. What is the minimum possible value of $M+N$?",
+  "answer": "10",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1346-2",
+  "pair_hard_id": "omni-1346",
+  "problem": "A cafe has 1 table and 4 individual counter seats. People enter in groups of size between 1 and 4, inclusive, and groups never share a table. A group of more than 1 will always try to sit at a table, but will sit in counter seats if no tables are available. Conversely, a group of 1 will always try to sit at the counter first. One morning, $M$ groups consisting of a total of $N$ people enter and sit down. Then, a single person walks in, and realizes that all the tables and counter seats are occupied by some person or group. What is the minimum possible value of $M+N$?",
+  "answer": "8",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1346-3",
+  "pair_hard_id": "omni-1346",
+  "problem": "A cafe has 2 tables and 5 individual counter seats. People enter in groups of size between 1 and 4, inclusive, and groups never share a table. A group of more than 1 will always try to sit at a table, but will sit in counter seats if no tables are available. Conversely, a group of 1 will always try to sit at the counter first. One morning, $M$ groups consisting of a total of $N$ people enter and sit down. Then, a single person walks in, and realizes that all the tables and counter seats are occupied by some person or group. What is the minimum possible value of $M+N$?",
+  "answer": "13",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1346-4",
+  "pair_hard_id": "omni-1346",
+  "problem": "Groups of people of sizes between 1 and 4 sit at a counter with 5 seats, filling every seat. For a group of size $s$ we score $s+1$ points. What is the minimum possible total score?",
+  "answer": "7",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1728-1",
+  "pair_hard_id": "omni-1728",
+  "problem": "Find the largest positive integer $n$ such that $\\frac{n(n-1)}{2}<180$.",
+  "answer": "19",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1728-2",
+  "pair_hard_id": "omni-1728",
+  "problem": "The exterior angles of a convex 9-gon form an arithmetic progression with common difference $4^{\\circ}$. Find the smallest exterior angle, in degrees.",
+  "answer": "24",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1728-3",
+  "pair_hard_id": "omni-1728",
+  "problem": "The interior angles of a convex pentagon form an arithmetic progression with common difference $10^{\\circ}$. Find the largest angle, in degrees.",
+  "answer": "128",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1728-4",
+  "pair_hard_id": "omni-1728",
+  "problem": "The angles of a convex $n$-sided polygon form an arithmetic progression with common difference $1^{\\circ}$ and $n=20$. Find the smallest exterior angle, in degrees.",
+  "answer": "\\frac{17}{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1900-1",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=1$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n=1$. Find $a_{3}$.",
+  "answer": "-1",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1900-2",
+  "pair_hard_id": "omni-1900",
+  "problem": "Compute $\\tan \\frac{\\pi}{12}$.",
+  "answer": "2 - \\sqrt{3}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1900-3",
+  "pair_hard_id": "omni-1900",
+  "problem": "Real numbers $x, y, z$ satisfy $x y z=x+y+z$, $x=1$ and $y=2$. Find $z$.",
+  "answer": "3",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1900-4",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=1, a_{2}=2$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n=1,2$. Find $a_{4}$.",
+  "answer": "3",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3709-1",
+  "pair_hard_id": "omni-3709",
+  "problem": "How many permutations $(a_{1}, \\ldots, a_{10})$ of $\\{1,2, \\ldots, 10\\}$ are there such that $k a_{k}$ is a perfect square for all $1 \\leq k \\leq 10$?",
+  "answer": "12",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3709-2",
+  "pair_hard_id": "omni-3709",
+  "problem": "How many positive integers $k \\leq 1000$ are there such that $2 k$ is a perfect square?",
+  "answer": "22",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3709-3",
+  "pair_hard_id": "omni-3709",
+  "problem": "Let $P(n)$ be the number of permutations $(a_{1}, \\ldots, a_{n})$ of $\\{1, \\ldots, n\\}$ for which $k a_{k}$ is a perfect square for all $1 \\leq k \\leq n$. Find the smallest $n$ such that $P(n)$ is a multiple of 7.",
+  "answer": "49",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3709-4",
+  "pair_hard_id": "omni-3709",
+  "problem": "How many permutations $(a_{1}, \\ldots, a_{20})$ of $\\{1,2, \\ldots, 20\\}$ are there such that $k a_{k}$ is a perfect square for all $1 \\leq k \\leq 20$?",
+  "answer": "576",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1391-1",
+  "pair_hard_id": "omni-1391",
+  "problem": "Find the minimum value of $t^{2}-t+2$ for $0 \\leq t \\leq 1$.",
+  "answer": "\\frac{7}{4}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1391-2",
+  "pair_hard_id": "omni-1391",
+  "problem": "If $\\sin \\alpha=\\frac{3}{5}$ and $\\frac{\\pi}{2}<\\alpha<\\pi$, find $\\cos \\alpha$.",
+  "answer": "-\\frac{4}{5}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1391-3",
+  "pair_hard_id": "omni-1391",
+  "problem": "Find the maximum value of $1+\\cos ^{2} x+\\sin ^{4} x$ over all real $x$.",
+  "answer": "2",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1391-4",
+  "pair_hard_id": "omni-1391",
+  "problem": "If $\\sin ^{2} x=\\frac{1}{3}$, compute $1+\\cos ^{2} x+\\sin ^{4} x$.",
+  "answer": "\\frac{16}{9}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0166-1",
+  "pair_hard_id": "omni-0166",
+  "problem": "A rhombus $A C B D$ has side length 1 and diagonal $C D=1$. Find the length of the diagonal $A B$.",
+  "answer": "\\sqrt{3}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0166-2",
+  "pair_hard_id": "omni-0166",
+  "problem": "Two spheres of radius 1 have centers $A$ and $B$ with $A B=\\sqrt{3}$. Find the radius of the circle in which they intersect.",
+  "answer": "\\frac{1}{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0166-3",
+  "pair_hard_id": "omni-0166",
+  "problem": "Find the maximum value of $\\sin \\theta+\\cos \\theta$ over all real $\\theta$.",
+  "answer": "\\sqrt{2}",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-0166-4",
+  "pair_hard_id": "omni-0166",
+  "problem": "Points $C$ and $D$ lie on a circle of radius $\\frac{1}{2}$ with $C D=1$. Find the angle $\\angle C O D$ in degrees, where $O$ is the center.",
+  "answer": "180",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1488-1",
+  "pair_hard_id": "omni-1488",
+  "problem": "The function $f(x)=x^{3}+a x$ has a local maximum at $x=-1$. Find $a$.",
+  "answer": "-3",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1488-2",
+  "pair_hard_id": "omni-1488",
+  "problem": "Find the local maximum value of $f(x)=x^{3}-3 x$.",
+  "answer": "2",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1488-3",
+  "pair_hard_id": "omni-1488",
+  "problem": "How many distinct real solutions does $x^{3}-3 x=1$ have?",
+  "answer": "3",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-1488-4",
+  "pair_hard_id": "omni-1488",
+  "problem": "Let $f(x)=x^{3}-3 x$. How many distinct real solutions does $f(f(x))=0$ have?",
+  "answer": "9",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3926-1",
+  "pair_hard_id": "omni-3926",
+  "problem": "Find the remainder when $2^{1990}$ is divided by 9.",
+  "answer": "7",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3926-2",
+  "pair_hard_id": "omni-3926",
+  "problem": "For a positive integer $k$ let $f(k)$ be the square of the sum of the digits of $k$. Compute $f\\left(2^{10}\\right)$.",
+  "answer": "49",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3926-3",
+  "pair_hard_id": "omni-3926",
+  "problem": "For a positive integer $k$ let $f(k)$ be the square of the sum of the digits of $k$. Compute $f\\left(2^{20}\\right)$.",
+  "answer": "961",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ },
+ {
+  "id": "rel-omni-3926-4",
+  "pair_hard_id": "omni-3926",
+  "problem": "For a positive integer $k$ denote the square of the sum of its digits by $f_{1}(k)$ and let $f_{n+1}(k)=f_{1}\\left(f_{n}(k)\\right)$. Determine $f_{3}(99)$.",
+  "answer": "81",
+  "method_note": "key step: an easy problem that isolates one step of the paired hard problem's reference solution"
+ }
+]
