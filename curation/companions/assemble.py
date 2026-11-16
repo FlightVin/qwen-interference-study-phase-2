@@ -1,7 +1,7 @@
 """Build curation/{related,conflicting}_candidates.json from batch1-4 (answers computed there).
 
 Checks, the same as scripts/screen_companions.py plus coverage: every pinned training problem has
-4 related and 4 conflicting candidates; each answer parses; no answer equals the hard answer; the
+at least 4 related and 4 conflicting candidates (round 2 adds more); each answer parses; no answer equals the hard answer; the
 hard answer is not in the text; no duplicate problem text.
 Usage (repo root): venv/bin/python curation/companions/assemble.py
 """
@@ -13,7 +13,11 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 sys.path[:0] = [str(HERE), str(ROOT)]
-import batch1, batch2, batch3, batch4  # noqa: E402
+import batch1, batch2, batch3, batch4, batch5  # noqa: E402
+try:
+    import batch6  # noqa: E402  (conflicting round 2)
+except ImportError:
+    batch6 = None
 from ri.grading import gold_parses, math_correct  # noqa: E402
 
 NOTES = {"related": "key step: an easy problem that isolates one step of the paired hard problem's reference solution",
@@ -29,7 +33,7 @@ def main():
         if d["id"] in train:
             hard[d["id"]] = d
     pools = {"related": [], "conflicting": []}
-    for b in (batch1, batch2, batch3, batch4):
+    for b in [b for b in (batch1, batch2, batch3, batch4, batch5, batch6) if b]:
         R, C = b.build()
         pools["related"] += R
         pools["conflicting"] += C
@@ -51,7 +55,7 @@ def main():
                 errors.append(f"{cid}: duplicate text")
             seen.add(problem)
             out.append({"id": cid, "pair_hard_id": hid, "problem": problem, "answer": answer, "method_note": NOTES[kind]})
-        errors += [f"{kind}: {h} has {n} candidates" for h, n in per.items() if n != 4]
+        errors += [f"{kind}: {h} has {n} candidates" for h, n in per.items() if n < 4]
         pools[kind] = out
     if errors:
         sys.exit("\n".join(errors))

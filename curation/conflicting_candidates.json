@@ -894,5 +894,495 @@
   "problem": "For a given positive integer $k$ denote the sum of the squares of its digits by $f_{1}(k)$ and let $f_{n+1}(k)=f_{1}\\left(f_{n}(k)\\right)$. Determine the value of $f_{1991}\\left(2^{1990}\\right)$.",
   "answer": "16",
   "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0793-5",
+  "pair_hard_id": "omni-0793",
+  "problem": "Define $\\varphi^{k}(n)$ as the number of positive integers that are at most $n / k$ and relatively prime to $n$. Compute $\\varphi^{4}(360)$.",
+  "answer": "24",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0793-6",
+  "pair_hard_id": "omni-0793",
+  "problem": "Define $\\varphi^{k}(n)$ as the number of positive integers that are at most $n / k$ and relatively prime to $n$. Compute $\\varphi^{7}(2940)$.",
+  "answer": "96",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0793-7",
+  "pair_hard_id": "omni-0793",
+  "problem": "Define $\\varphi^{k}(n)$ as the number of positive integers that are at most $n / k$ and relatively prime to $n$. Compute $\\varphi^{3}(1350)$.",
+  "answer": "120",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0793-8",
+  "pair_hard_id": "omni-0793",
+  "problem": "Define $\\varphi^{k}(n)$ as the number of positive integers that are at most $n / k$ and relatively prime to $n$. Compute $\\varphi^{5}(3000)$.",
+  "answer": "160",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1735-5",
+  "pair_hard_id": "omni-1735",
+  "problem": "A fair 6-sided die is rolled twice. What is the probability that the second roll is less than or equal to the first?",
+  "answer": "\\frac{7}{12}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1735-6",
+  "pair_hard_id": "omni-1735",
+  "problem": "We keep rolling a fair 3-sided die (faces 1, 2, 3) until we get a value less than or equal to the previous roll. What is the probability that at least 3 rolls are made?",
+  "answer": "\\frac{1}{3}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1735-7",
+  "pair_hard_id": "omni-1735",
+  "problem": "We keep rolling a fair 5-sided die (faces 1 to 5) until we get a value less than or equal to the previous roll. What is the probability that exactly 2 rolls are made?",
+  "answer": "\\frac{3}{5}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1814-5",
+  "pair_hard_id": "omni-1814",
+  "problem": "The circle $x^{2}+y^{2}=6$ meets the hyperbola $x y=1$ at four points, which form a rectangle. Find the area of this rectangle.",
+  "answer": "8 \\sqrt{2}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1814-6",
+  "pair_hard_id": "omni-1814",
+  "problem": "The circle $x^{2}+y^{2}=10$ meets the hyperbola $x y=1$ at four points, which form a rectangle. Find the area of this rectangle.",
+  "answer": "8 \\sqrt{6}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1814-7",
+  "pair_hard_id": "omni-1814",
+  "problem": "The circle $x^{2}+y^{2}=7$ meets the hyperbola $x y=1$ at four points. Find the sum of the squares of their four $x$-coordinates.",
+  "answer": "14",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2140-5",
+  "pair_hard_id": "omni-2140",
+  "problem": "The eight roots of $z^{8}=1$ form a regular octagon in the complex plane. Find its area.",
+  "answer": "2 \\sqrt{2}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2140-6",
+  "pair_hard_id": "omni-2140",
+  "problem": "The four roots of $z^{4}+4=0$ form a square in the complex plane. Find its area.",
+  "answer": "4",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2140-7",
+  "pair_hard_id": "omni-2140",
+  "problem": "The twelve roots of $z^{12}=1$ form a regular 12-gon in the complex plane. Find its area.",
+  "answer": "3",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2430-5",
+  "pair_hard_id": "omni-2430",
+  "problem": "Find the smallest positive integer $m$ such that none of $\\log _{3}(m), \\log _{3}(m+1), \\ldots, \\log _{3}(m+50)$ is an integer.",
+  "answer": "28",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2430-6",
+  "pair_hard_id": "omni-2430",
+  "problem": "Find the smallest positive integer $m$ such that none of $\\log _{6}(m), \\log _{6}(m+1), \\ldots, \\log _{6}(m+30)$ is an integer.",
+  "answer": "37",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2430-7",
+  "pair_hard_id": "omni-2430",
+  "problem": "Find the smallest positive integer $m$ such that none of $\\log _{2}(m), \\log _{2}(m+1), \\ldots, \\log _{2}(m+40)$ is an integer.",
+  "answer": "65",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0528-5",
+  "pair_hard_id": "omni-0528",
+  "problem": "Let $S$ be the set of 9 points in the plane with both coordinates in $\\{-1,0,1\\}$. How many sequences $P_{1}, P_{2}, P_{3}$ of points in $S$ have $P_{1}=(0,0)$ and $P_{1} P_{2}=P_{2} P_{3}=\\sqrt{2}$?",
+  "answer": "4",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0528-6",
+  "pair_hard_id": "omni-0528",
+  "problem": "Let $S$ be the set of 27 points in space with every coordinate in $\\{-1,0,1\\}$. How many sequences $P_{1}, P_{2}, P_{3}$ of points in $S$ have $P_{1}=(0,0,0)$ and $P_{1} P_{2}=P_{2} P_{3}=\\sqrt{3}$?",
+  "answer": "8",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0528-7",
+  "pair_hard_id": "omni-0528",
+  "problem": "Let $S$ be the set of 27 points in space with every coordinate in $\\{-1,0,1\\}$. How many sequences $P_{1}, P_{2}, P_{3}, P_{4}$ of points in $S$ have $P_{1}=(0,0,0)$, $P_{i} P_{i+1}=\\sqrt{3}$ for $1 \\leq i \\leq 4$, where $P_{5}=P_{1}$?",
+  "answer": "64",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0596-5",
+  "pair_hard_id": "omni-0596",
+  "problem": "Triangle $A B C$ has vertices $A=(0,6), B=(0,0), C=(8,0)$. Find the area of the set of points $P$ inside the triangle whose distance to line $A B$ is at most their distance to line $B C$.",
+  "answer": "\\frac{72}{7}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0596-6",
+  "pair_hard_id": "omni-0596",
+  "problem": "Triangle $A B C$ has $A B=6, B C=8, A C=10$. Find the distance from the centroid of the triangle to side $A C$.",
+  "answer": "\\frac{8}{5}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1877-5",
+  "pair_hard_id": "omni-1877",
+  "problem": "Let $A, B, C$ be points in that order along a line with $A B=13$ and $B C=13$. Let $\\omega$ be the circle of radius $12$ centered at $B$, and let $\\ell_{1}$, $\\ell_{2}$ be the tangents to $\\omega$ through $A$ and $C$ on the same side of line $A C$, meeting at $K$. Let $X$ on segment $K A$ and $Y$ on segment $K C$ be such that $X Y \\| A C$ and $X Y$ is tangent to $\\omega$. Find $X Y$.",
+  "answer": "16",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1877-6",
+  "pair_hard_id": "omni-1877",
+  "problem": "Let $A, B, C$ be points in that order along a line with $A B=17$ and $B C=17$. Let $\\omega$ be the circle of radius $15$ centered at $B$, and let $\\ell_{1}$, $\\ell_{2}$ be the tangents to $\\omega$ through $A$ and $C$ on the same side of line $A C$, meeting at $K$. Let $X$ on segment $K A$ and $Y$ on segment $K C$ be such that $X Y \\| A C$ and $X Y$ is tangent to $\\omega$. Find $X Y$.",
+  "answer": "18",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0757-5",
+  "pair_hard_id": "omni-0757",
+  "problem": "Let $n$ be the maximum number of queens that can be placed on a $4 \\times 4$ chessboard so that no two attack each other, and let $k$ be the number of ways to place $n$ such queens. Find $n+k$.",
+  "answer": "6",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0757-6",
+  "pair_hard_id": "omni-0757",
+  "problem": "Let $n$ be the maximum number of kings that can be placed on a $3 \\times 3$ chessboard so that no two attack each other, and let $k$ be the number of ways to place $n$ such kings. Find $n+k$.",
+  "answer": "5",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0757-7",
+  "pair_hard_id": "omni-0757",
+  "problem": "Let $n$ be the maximum number of rooks that can be placed on a $7 \\times 7$ chessboard so that no two attack each other, and let $k$ be the number of ways to place $n$ such rooks. Find $n+k$.",
+  "answer": "5047",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0848-5",
+  "pair_hard_id": "omni-0848",
+  "problem": "Segments $A D, B E, C F$ share a common midpoint, each pair forms a $60^{\\circ}$ angle, and $A D=B E=C F=2$, with $A, B, C, D, E, F$ in order around the midpoint. Find the area of hexagon $A B C D E F$.",
+  "answer": "\\frac{3 \\sqrt{3}}{2}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0848-6",
+  "pair_hard_id": "omni-0848",
+  "problem": "A regular hexagon has side length 2. Find its area.",
+  "answer": "6 \\sqrt{3}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0848-7",
+  "pair_hard_id": "omni-0848",
+  "problem": "A regular hexagon $A B C D E F$ has side length 1. Find the area of triangle $A C E$.",
+  "answer": "\\frac{3 \\sqrt{3}}{4}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1590-5",
+  "pair_hard_id": "omni-1590",
+  "problem": "How many integers $n$ with $0 \\leq n \\leq 20$ satisfy $\\left\\lfloor\\frac{n}{2}\\right\\rfloor=\\left\\lfloor\\frac{n}{3}\\right\\rfloor$?",
+  "answer": "3",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1590-6",
+  "pair_hard_id": "omni-1590",
+  "problem": "How many integers $n$ with $0 \\leq n \\leq 30$ satisfy $\\left\\lfloor\\frac{n}{4}\\right\\rfloor=\\left\\lfloor\\frac{n}{5}\\right\\rfloor$?",
+  "answer": "10",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1590-7",
+  "pair_hard_id": "omni-1590",
+  "problem": "How many integers $n$ with $1 \\leq n \\leq 12$ satisfy $\\left\\lceil\\frac{n}{2}\\right\\rceil=\\left\\lceil\\frac{n}{3}\\right\\rceil$?",
+  "answer": "3",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0912-5",
+  "pair_hard_id": "omni-0912",
+  "problem": "Define $P=\\{\\mathrm{S}\\}$ and let $\\mathcal{P}$ be the set of all subsets of $P$. How many ordered pairs $(\\mathcal{S}, \\mathcal{T})$ of subsets of $\\mathcal{P}$ are there such that $\\mathcal{S}$ is not a proper subset of $\\mathcal{T}$ and $\\mathcal{T}$ is not a proper subset of $\\mathcal{S}$?",
+  "answer": "6",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-0912-6",
+  "pair_hard_id": "omni-0912",
+  "problem": "How many subsets of $\\{\\varnothing,\\{1\\},\\{2\\},\\{1,2\\}\\}$ contain no two sets such that one is a proper subset of the other?",
+  "answer": "6",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2584-5",
+  "pair_hard_id": "omni-2584",
+  "problem": "Let $V$ be a rectangular prism with integer side lengths. The largest face has area 30 and the smallest face has area 6. A third face has area $x$, where $x$ is not equal to 6 or 30. What is the sum of all possible values of $x$?",
+  "answer": "20",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2584-6",
+  "pair_hard_id": "omni-2584",
+  "problem": "Let $V$ be a rectangular prism with integer side lengths. The largest face has area 24 and the smallest face has area 4. A third face has area $x$, where $x$ is not equal to 4 or 24. What is the sum of all possible values of $x$?",
+  "answer": "6",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2215-5",
+  "pair_hard_id": "omni-2215",
+  "problem": "Let $P(x)=x^{3}+a x^{2}+b x+c$ with $P(1)=1, P(2)=3$, and $P(3)=6$. Find $P(0)$.",
+  "answer": "-6",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2215-6",
+  "pair_hard_id": "omni-2215",
+  "problem": "Let $P(x)=x^{2}+b x+c$ with $P(1)=2$ and $P(3)=10$. Find $P(0)$.",
+  "answer": "1",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2546-5",
+  "pair_hard_id": "omni-2546",
+  "problem": "Let $P$ and $Q$ be points on line $l$ with $P Q=12$. Two circles are tangent to $l$ at $P$ and externally tangent to each other. A line through $Q$ meets the first circle at $A$ and $B$ ($A$ closer to $Q$) with $A B=10$, and another line through $Q$ meets the second circle at $C$ and $D$ ($C$ closer to $Q$) with $C D=7$. Find $Q B \\cdot Q D$.",
+  "answer": "288",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2546-6",
+  "pair_hard_id": "omni-2546",
+  "problem": "Let $P$ and $Q$ be points on line $l$ with $P Q=12$. Two circles are tangent to $l$ at $P$ and externally tangent to each other. A line through $Q$ meets the first circle at $A$ and $B$ ($A$ closer to $Q$) with $A B=10$, and another line through $Q$ meets the second circle at $C$ and $D$ ($C$ closer to $Q$) with $C D=7$. Find $\\frac{Q B}{Q C}$.",
+  "answer": "2",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2207-5",
+  "pair_hard_id": "omni-2207",
+  "problem": "How many functions $f:\\{1,2,3\\} \\rightarrow\\{1,2,3\\}$ satisfy $f(j) \\leq f(i)+j-i$ for all integers $i, j$ such that $1 \\leq i<j \\leq 3$?",
+  "answer": "21",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2207-6",
+  "pair_hard_id": "omni-2207",
+  "problem": "How many functions $f:\\{1,2,3\\} \\rightarrow\\{1,2,3\\}$ satisfy $|f(j)-f(i)|<j-i$ for all integers $i, j$ such that $1 \\leq i<j \\leq 3$?",
+  "answer": "3",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2207-7",
+  "pair_hard_id": "omni-2207",
+  "problem": "How many functions $f:\\{1,2,3\\} \\rightarrow\\{1,2,3\\}$ satisfy $f(j) \\leq f(i)+2(j-i)$ for all integers $i, j$ such that $1 \\leq i<j \\leq 3$?",
+  "answer": "27",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1689-5",
+  "pair_hard_id": "omni-1689",
+  "problem": "A student was counting his stones by 5. He messed up $n$ times and instead counted 3s and wound up at 30. How many values of $n$ are possible?",
+  "answer": "3",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1689-6",
+  "pair_hard_id": "omni-1689",
+  "problem": "A student was counting his stones by 7. He messed up $n$ times and instead counted 4s and wound up at 56. How many values of $n$ are possible?",
+  "answer": "3",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1689-7",
+  "pair_hard_id": "omni-1689",
+  "problem": "A student was counting his stones by 6. He messed up $n$ times and instead counted 5s and wound up at 90. How many values of $n$ are possible?",
+  "answer": "4",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2600-5",
+  "pair_hard_id": "omni-2600",
+  "problem": "A regular octagon $A B C D E F G H$ has side length 1. Find its area.",
+  "answer": "2 + 2 \\sqrt{2}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2600-6",
+  "pair_hard_id": "omni-2600",
+  "problem": "A regular octagon $A B C D E F G H$ has side length 1. Find the area of square $A C E G$.",
+  "answer": "\\sqrt{2} + 2",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2600-7",
+  "pair_hard_id": "omni-2600",
+  "problem": "In a regular octagon $A B C D E F G H$, find $\\sin \\angle A B C$.",
+  "answer": "\\frac{\\sqrt{2}}{2}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1346-5",
+  "pair_hard_id": "omni-1346",
+  "problem": "A cafe has 1 table and 1 counter seat. People enter in groups of size between 1 and 4, and groups never share a table. Every group, including a group of 1, sits at a table if one is free, and otherwise in counter seats. $M$ groups with a total of $N$ people enter and sit down, after which every table and counter seat is occupied. What is the minimum possible value of $M+N$?",
+  "answer": "4",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1346-6",
+  "pair_hard_id": "omni-1346",
+  "problem": "A cafe has 2 tables and 1 counter seat. People enter in groups of size between 1 and 4, and groups never share a table. Every group, including a group of 1, sits at a table if one is free, and otherwise in counter seats. $M$ groups with a total of $N$ people enter and sit down, after which every table and counter seat is occupied. What is the minimum possible value of $M+N$?",
+  "answer": "6",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1346-7",
+  "pair_hard_id": "omni-1346",
+  "problem": "A cafe has 2 tables and 1 counter seat. People enter in groups of size between 1 and 4, and groups never share a table. A group of more than 1 sits at a table if one is free, and otherwise in counter seats; a group of 1 sits at the counter if a seat is free, and otherwise at a table. $M$ groups with a total of $N$ people enter and sit down, after which every table and counter seat is occupied. What is the minimum possible value of $M+N$?",
+  "answer": "6",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1728-5",
+  "pair_hard_id": "omni-1728",
+  "problem": "The angles of a convex $n$-sided polygon form an arithmetic progression whose common difference is $10^{\\circ}$. Find the largest possible value of $n$.",
+  "answer": "8",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1728-6",
+  "pair_hard_id": "omni-1728",
+  "problem": "The angles of a convex $n$-sided polygon form an arithmetic progression whose common difference is $20^{\\circ}$. Find the largest possible value of $n$.",
+  "answer": "6",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1900-5",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=2, a_{2}=1$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n \\geq 1$. Find $a_{4}$.",
+  "answer": "3",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1900-6",
+  "pair_hard_id": "omni-1900",
+  "problem": "A sequence satisfies $a_{0}=0, a_{1}=3, a_{2}=2$, and $a_{n+2} a_{n} a_{n-1}=a_{n+2}+a_{n}+a_{n-1}$ for $n \\geq 1$. Find $a_{4}$.",
+  "answer": "1",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1391-5",
+  "pair_hard_id": "omni-1391",
+  "problem": "Suppose $x$ is a real number such that $\\sin \\left(1+\\cos ^{2} x+\\sin ^{4} x\\right)=\\frac{19}{20}$. Compute $\\cos \\left(1+\\sin ^{2} x+\\cos ^{4} x\\right)$.",
+  "answer": "- \\frac{\\sqrt{39}}{20}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1391-6",
+  "pair_hard_id": "omni-1391",
+  "problem": "Suppose $x$ is a real number such that $\\cos \\left(\\cos ^{2} x+\\sin ^{4} x\\right)=\\frac{3}{5}$. Compute $\\sin \\left(\\sin ^{2} x+\\cos ^{4} x\\right)$.",
+  "answer": "\\frac{4}{5}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-3926-5",
+  "pair_hard_id": "omni-3926",
+  "problem": "For a positive integer $k$ let $g(k)$ be the sum of the squares of the digits of $k$. Compute $g(g(g(4)))$.",
+  "answer": "58",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-3926-6",
+  "pair_hard_id": "omni-3926",
+  "problem": "For a positive integer $k$ let $g(k)$ be the sum of the squares of the digits of $k$. Compute $g(g(2^{10}))$.",
+  "answer": "5",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-3926-7",
+  "pair_hard_id": "omni-3926",
+  "problem": "For a positive integer $k$ let $f(k)$ be the square of the sum of the digits of $k$. Compute $f(f(2^{16}))$.",
+  "answer": "169",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2082-5",
+  "pair_hard_id": "omni-2082",
+  "problem": "Let $A B C$ be a triangle with $A B=13, B C=14$, and $C A=15$. Find the inradius of triangle $A B C$.",
+  "answer": "4",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2082-6",
+  "pair_hard_id": "omni-2082",
+  "problem": "Let $A B C$ be a triangle with $A B=13, B C=14$, and $C A=15$. Let $D$ be the foot of the altitude from $A$, and $I$ the incenter of $A B C$. Find $D I$.",
+  "answer": "\\sqrt{17}",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2543-5",
+  "pair_hard_id": "omni-2543",
+  "problem": "Let $r_{1}, r_{2}, r_{3}$ be the roots of $x^{3}-7$, and $K=\\left(r_{1}+r_{2}\\right)\\left(r_{1}+r_{3}\\right)\\left(r_{2}+r_{3}\\right)$. Find $K$.",
+  "answer": "-7",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-2543-6",
+  "pair_hard_id": "omni-2543",
+  "problem": "Let $r_{1}, r_{2}, r_{3}$ be the roots of $x^{3}-3 x+1$, and $K=\\left(r_{1}+r_{2}\\right)\\left(r_{1}+r_{3}\\right)\\left(r_{2}+r_{3}\\right)$. Find $K^{2}$.",
+  "answer": "1",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1362-5",
+  "pair_hard_id": "omni-1362",
+  "problem": "The Fibonacci sequence is defined by $F_{0}=0, F_{1}=1$, and $F_{n}=F_{n-1}+F_{n-2}$. Find the smallest positive integer $m$ such that $F_{m} \\equiv 0(\\bmod 19)$ and $F_{m+1} \\equiv 1(\\bmod 19)$.",
+  "answer": "18",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1362-6",
+  "pair_hard_id": "omni-1362",
+  "problem": "The Fibonacci sequence is defined by $F_{0}=0, F_{1}=1$, and $F_{n}=F_{n-1}+F_{n-2}$. Find the smallest positive integer $m$ such that $F_{m} \\equiv 0(\\bmod 31)$ and $F_{m+1} \\equiv 1(\\bmod 31)$.",
+  "answer": "30",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-1362-7",
+  "pair_hard_id": "omni-1362",
+  "problem": "The Fibonacci sequence is defined by $F_{0}=0, F_{1}=1$, and $F_{n}=F_{n-1}+F_{n-2}$. Find the smallest positive integer $m$ such that $F_{m} \\equiv 0(\\bmod 5)$ and $F_{m+1} \\equiv 1(\\bmod 5)$.",
+  "answer": "20",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-3709-5",
+  "pair_hard_id": "omni-3709",
+  "problem": "How many permutations $(a_{1}, \\ldots, a_{3})$ of $\\{1, \\ldots, 3\\}$ are there such that $k+a_{k}$ is a perfect square for all $1 \\leq k \\leq 3$?",
+  "answer": "1",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
+ },
+ {
+  "id": "con-omni-3709-6",
+  "pair_hard_id": "omni-3709",
+  "problem": "How many permutations $(a_{1}, \\ldots, a_{12})$ of $\\{1, \\ldots, 12\\}$ are there such that $k+a_{k}$ is a perfect square for all $1 \\leq k \\leq 12$?",
+  "answer": "1",
+  "method_note": "lookalike: same setting as the paired hard problem; solved by a method (small-case computation, a changed rule, or a shortcut) that does not solve the hard problem"
  }
 ]
