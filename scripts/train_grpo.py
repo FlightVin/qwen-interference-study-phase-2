@@ -232,6 +232,15 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     eval_rounds = {int(x) for x in a.eval_rounds.split(",") if x}
     save_rounds = {int(x) for x in a.save_weights.split(",") if x}
+    # A resume job may start after the run already finished, or after its checkpoint was lost: never
+    # restart a run with recorded rounds from round 1 (that would overwrite its rounds.jsonl).
+    rp = run_dir / "rounds.jsonl"
+    done = [json.loads(l)["round"] for l in rp.read_text().splitlines() if l] if rp.exists() else []
+    if done and max(done) >= a.rounds and (a.rounds not in eval_rounds or (run_dir / f"eval_r{a.rounds:03d}.json").exists()):
+        print(f"== {run} is already complete ({max(done)} rounds); nothing to do", flush=True)
+        sys.exit(0)
+    if done and not (run_dir / "ckpt.pt").exists():
+        sys.exit(f"!! {run} has {len(done)} recorded rounds but no checkpoint; refusing to restart from round 1")
     t_start = time.time()
 
     d = load_data(a.fake)
@@ -304,7 +313,8 @@ def main():
     info = {"run": run, "setup": a.setup, "seed": a.seed, "rounds": a.rounds, "eval_rounds": sorted(eval_rounds),
             "model": config.MODEL_ID, "revision": config.MODEL_REVISION, "lr": 2e-6, "clip": 0.2,
             "attempts": N_ATTEMPTS, "loss_divisor": __import__("ri.grpo", fromlist=["x"]).LOSS_DIVISOR,
-            "steps_per_round": STEPS_PER_ROUND, "max_tokens": config.MAX_TOKENS, "update_tracking": True,
+            "steps_per_round": STEPS_PER_ROUND, "max_tokens": config.MAX_TOKENS,
+            "update_tracking_from": (load_json(meta_path) or {}).get("update_tracking_from", start),
             "host": os.uname().nodename, "slurm_job": os.environ.get("SLURM_JOB_ID"),
             "gpu": (__import__("torch").cuda.get_device_name(0) if not a.fake else "cpu"),
             "schedule": sched, "starts": (load_json(meta_path) or {}).get("starts", []) + [{"round": start, "time": time.time()}]}
