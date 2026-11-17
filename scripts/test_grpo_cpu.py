@@ -162,8 +162,114 @@ tc.step(G2[2:], G2[:2], None)
 same = all(torch.equal(p, q) for p, q in zip(tb.params, tc.params))
 check(same and meta["round"] == 1, "checkpoint resume reproduces the next step exactly")
 
+# 10. actual-update tracking (owner 2026-11-16, A8)
+def flat(xs):
+    return torch.cat([x.float().reshape(-1) for x in xs])
+
+
+def rel(a, b):
+    return abs(a - b) / max(abs(b), 1e-30)
+
+
+sols10 = {"hA": [([1, 2, 3], [5, 6, 7, 8])], "hB": [([4, 5], [9, 10, 11]), ([4, 5], [12, 13])]}
+t = fresh()
+lr, b1 = 2e-6, 0.9
+t.hard_direction(sols10, 0)
+check(abs(t.lik_dir - sum(t.likelihood(sols10).values()) / 2) < 1e-5, "lik_dir == mean per-problem likelihood of the d_H solutions")
+d = flat(t.d_H)
+mc_man = torch.zeros_like(d)
+mh_man = torch.zeros_like(d)
+ok_du = ok_norm = ok_mc = ok_split = ok_uc = ok_ah = ok_sgd = ok_lay = True
+first = None
+for k in range(4):
+    Gk = [group(f"h{k}a"), group(f"h{k}b"), group(f"c{k}a"), group(f"c{k}b")]
+    comp, hard = Gk[2:], Gk[:2]
+    if k == 2:
+        grpo.LOSS_DIVISOR = 0.002   # force gradient clipping on one step
+    t.opt.zero_grad(set_to_none=True); t._backward_groups(comp, None); gck = flat_grad(t).clone()
+    t.opt.zero_grad(set_to_none=True); t._backward_groups(hard, None); ghk = flat_grad(t).clone()
+    t.opt.zero_grad(set_to_none=True)
+    coef = min(1.0, 1.0 / (float((gck + ghk).norm()) + 1e-6))
+    w0 = torch.cat([p.detach().reshape(-1) for p in t.params]).clone()
+    dg = t.step(comp, hard, None)
+    grpo.LOSS_DIVISOR = 32.0
+    u = dg["update"]
+    if first is None:
+        first, nz1 = u, int((dw := torch.cat([p.detach().reshape(-1) for p in t.params]) - w0).ne(0).sum())
+    dw = torch.cat([p.detach().reshape(-1) for p in t.params]) - w0
+    gcb = bf(gck) * coef
+    mc_man = b1 * mc_man + (1 - b1) * gcb
+    mh_man = b1 * mh_man + (1 - b1) * ((gck + ghk) * coef - gcb)
+    tt = u["t"]
+    bc1, bc2 = 1 - b1 ** tt, 1 - 0.999 ** tt
+    den = (flat(t.opt.state[p]["exp_avg_sq"] for p in t.params) / bc2).sqrt() + 1e-8
+    m_after = flat(t.opt.state[p]["exp_avg"] for p in t.params)
+    uc_man = -lr * (mc_man / bc1) / den
+    ok_du &= rel(u["d_dot_u"], float(d @ dw)) < 1e-3
+    ok_norm &= rel(u["norm_u"], float(dw.norm())) < 1e-3
+    ok_mc &= float((flat(t.comp_m) - mc_man).norm()) < 1e-2 * float(mc_man.norm())
+    ok_split &= float((m_after - mc_man - mh_man).norm()) < 1e-2 * float(m_after.norm())
+    ok_uc &= rel(u["d_dot_u_comp"], float(d @ uc_man)) < 2e-2
+    ok_ah &= rel(u["ahard_dot_u_comp"], float((-mh_man / bc1) @ uc_man)) < 5e-2
+    ok_sgd &= rel(u["sgd_d_dot_comp"], float(-lr * coef * (bf(gck) @ d))) < 1e-3
+    ok_lay &= rel(sum(v[0] for v in u["per_layer"].values()), u["d_dot_u_comp"]) < 1e-6 \
+        and rel(sum(v[1] for v in u["per_layer"].values()), u["d_dot_u_hard"]) < 1e-6
+    if k == 2:
+        check(u["clip_coef"] < 1 and abs(u["clip_coef"] - coef) < 1e-6, f"clip coefficient used ({u['clip_coef']:.4f})")
+check(ok_du, "d_H . (theta_after - theta_before) == logged d_dot_u (4 steps, one clipped)")
+check(ok_norm, "|theta_after - theta_before| == logged norm_u")
+check(ok_mc, "companion momentum == manual EMA of clipped bf16 g_c")
+check(ok_split, "Adam momentum m == m_comp + m_hard (manual EMAs)")
+check(ok_uc, "d_dot_u_comp == d_H . (-lr P m_comp / bc1) recomputed")
+check(ok_ah, "ahard_dot_u_comp == a_h . Delta_c recomputed")
+check(ok_sgd, "sgd_d_dot_comp == -lr coef d_H . g_c")
+check(ok_lay, "per-layer [d.u_comp, d.u_hard] sum to the totals")
+check(first["t"] == 1 and rel(first["norm_u"], lr * math.sqrt(nz1)) < 0.05,
+      f"first step is sign-like: |u| ~ lr sqrt(#coords) ({first['norm_u']:.3e})")
+
+th = fresh()
+th.hard_direction(sols10, 0)
+uh_ = th.step([], G[:2], None)["update"]
+check(th.comp_m is None and uh_["d_dot_u_comp"] is None and uh_["cos_u_comp_H"] is None
+      and uh_["d_dot_u_hard"] == uh_["d_dot_u"], "hard only: no companion terms, hard part == whole update")
+
+ta, tb = fresh(), fresh()
+for tt_ in (ta, tb):
+    tt_.hard_direction(sols10, 0)
+    tt_.step(G[2:], G[:2], None)
+with tempfile.TemporaryDirectory() as td:
+    ta.save(td + "/c.pt", {"round": 1})
+    tc = fresh()
+    tc.load(td + "/c.pt")
+    tc.d_H = [x.clone() if x is not None else None for x in tb.d_H]   # d_H is recomputed after a resume
+    ub = tb.step(G2[2:], G2[:2], None)["update"]
+    uc_ = tc.step(G2[2:], G2[:2], None)["update"]
+    snap = tb.snapshot_cpu()
+    tb.save_snapshot(snap, td + "/s.pt", {"round": 2})
+    ts_ = fresh()
+    ts_.load(td + "/s.pt")
+    same_cm = all(torch.equal(x, y) for x, y in zip(tb.comp_m, ts_.comp_m))
+    torch.save({"model": ta.model.state_dict(), "opt": ta.opt.state_dict(), "meta": {"round": 3}}, td + "/old.pt")
+    to = fresh()
+    to.load(td + "/old.pt")
+    to.hard_direction(sols10, 0)
+    r1 = to.step(G2[2:], G2[:2], None)["update"]["comp_m_reset"]
+    r2 = to.step(G2[2:], G2[:2], None)["update"]["comp_m_reset"]
+check(all(torch.equal(x, y) for x, y in zip(tb.comp_m, tc.comp_m)) and ub["d_dot_u_comp"] == uc_["d_dot_u_comp"],
+      "checkpoint resume keeps the companion momentum (identical next update)")
+check(same_cm, "background snapshot checkpoint keeps the companion momentum")
+check(r1 is True and r2 is False, "old checkpoint without comp_m: reset flagged once")
+
+tf = fresh()
+tf.hard_direction(sols10, 0)
+tf._update_terms = lambda *a_, **k_: (_ for _ in ()).throw(RuntimeError("boom"))
+w0 = torch.cat([p.detach().reshape(-1) for p in tf.params]).clone()
+df_ = tf.step(G[2:], G[:2], None)
+w1 = torch.cat([p.detach().reshape(-1) for p in tf.params])
+check("error" in df_["update"] and not tf.track_update and not torch.equal(w0, w1), "a tracking failure turns tracking off; the step still applies")
+
 # 9. schedule
-train = [f"omni-{i:04d}" for i in range(32)]
+train =[f"omni-{i:04d}" for i in range(32)]
 pools = {"related": [{"id": f"rel-{h}-{k}", "pair_hard_id": h} for h in train[:-2] for k in range(2)] + [{"id": f"rel-{train[-2]}-1", "pair_hard_id": train[-2]}],
          "conflicting": [{"id": f"con-{h}-1", "pair_hard_id": h} for h in train[:-1]],
          "guided": [{"id": f"g-{h}", "pair_hard_id": h} for h in train],

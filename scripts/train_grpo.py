@@ -283,7 +283,7 @@ def main():
 
         def job():
             try:
-                writer["last"] = write_checkpoint(trainer, ckpt, meta, 21.0, snap)
+                writer["last"] = write_checkpoint(trainer, ckpt, meta, 25.0, snap)
             except Exception as e:  # never kill training over a checkpoint
                 writer["last"] = f"failed: {e!r}"
                 print(f"!! checkpoint round {r} failed: {e!r}", flush=True)
@@ -304,7 +304,7 @@ def main():
     info = {"run": run, "setup": a.setup, "seed": a.seed, "rounds": a.rounds, "eval_rounds": sorted(eval_rounds),
             "model": config.MODEL_ID, "revision": config.MODEL_REVISION, "lr": 2e-6, "clip": 0.2,
             "attempts": N_ATTEMPTS, "loss_divisor": __import__("ri.grpo", fromlist=["x"]).LOSS_DIVISOR,
-            "steps_per_round": STEPS_PER_ROUND, "max_tokens": config.MAX_TOKENS,
+            "steps_per_round": STEPS_PER_ROUND, "max_tokens": config.MAX_TOKENS, "update_tracking": True,
             "host": os.uname().nodename, "slurm_job": os.environ.get("SLURM_JOB_ID"),
             "gpu": (__import__("torch").cuda.get_device_name(0) if not a.fake else "cpu"),
             "schedule": sched, "starts": (load_json(meta_path) or {}).get("starts", []) + [{"round": start, "time": time.time()}]}
@@ -364,10 +364,12 @@ def main():
         trainer.offload_direction(False)
         hard_g = [{"key": f"h{i}", "attempts": res[f"h{i}"]} for i in range(len(sch["hard"]))]
         comp_g = [{"key": f"c{i}", "attempts": res[f"c{i}"]} for i in range(len(sch["companions"]))]
+        lik_dir = None
         if trainer.d_H is None or (r - 1) % a.dir_every == 0:
             td = time.time()
             trainer.hard_direction(dir_sols, r - 1)
             T["direction"] = time.time() - td
+            lik_dir = trainer.lik_dir   # observed objective at the start of this d_H window
         tl = time.time()
         later = {f"{p}{k}" for p in "hc" for k in range(1, STEPS_PER_ROUND)}   # steps 2-4: off-policy ratio
         old, ent = trainer.old_logps_and_entropy(hard_g + comp_g, later)
@@ -386,7 +388,7 @@ def main():
         ck_note = None
         if a.ckpt_every > 0 and r % a.ckpt_every == 0 and r < a.rounds:
             tc = time.time()
-            ck_note = start_checkpoint(r)
+            ck_note = start_checkpoint(r)   # ~24 GB with the companion momentum
             T["checkpoint"] = time.time() - tc
         if r in save_rounds:
             trainer.save_bf16(str(run_dir / f"weights_r{r:03d}.safetensors"))
@@ -411,7 +413,8 @@ def main():
                           "zero_signal": sum(g["tokens"] for g in groups if not g["signal"])},
                "groups": groups, "steps": steps, "d_H_round": trainer.d_H_round, "likelihood": lik,
                "time": {k: round(v, 1) for k, v in T.items()}, "gpu": {"free_gb_after_generate": free_gen, "trainer_peak_gb": peak},
-               "disk_free_gb": disk_free_gb(run_dir), "checkpoint": ck_note, "checkpoint_last": writer["last"]}
+               "disk_free_gb": disk_free_gb(run_dir), "checkpoint": ck_note, "checkpoint_last": writer["last"],
+               "lik_dir": lik_dir}
         rec["time"]["round"] = round(time.time() - t0, 1)
         with open(rounds_path, "a") as f:
             f.write(json.dumps(rec) + "\n")
@@ -421,6 +424,8 @@ def main():
               f"| cos(c,H) {' '.join(cc(s['cos_comp_H']) for s in steps)} | cos(h,H) {' '.join(cc(s['cos_hard_H']) for s in steps)} "
               f"| lik {sum(lik.values()) / len(lik):.4f} | gen {T['generate']:.0f}s train {T['train']:.0f}s "
               f"sync {T['sync']:.0f}s round {rec['time']['round']:.0f}s | peak {peak} GiB | disk {rec['disk_free_gb']} GB free"
+              + (" | dL(c) {:+.2e} dL(h) {:+.2e}".format(sum((s.get("update") or {}).get("d_dot_u_comp") or 0 for s in steps),
+                                                         sum((s.get("update") or {}).get("d_dot_u_hard") or 0 for s in steps)))
               + (f" | ckpt {ck_note}" if ck_note else ""), flush=True)
 
         if a.smoke:

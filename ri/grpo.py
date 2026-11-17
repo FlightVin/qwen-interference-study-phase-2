@@ -83,6 +83,15 @@ class Trainer:
         self.autocast = autocast and self.device == "cuda"
         self.d_H = None          # hard direction (bf16, list per parameter), or None
         self.d_H_round = None
+        self.lik_dir = None      # value of the objective whose ascent gradient is d_H (set with d_H)
+        # Update tracking (owner 2026-11-16, A8): running companion momentum m^c (bf16), so the actual
+        # Adam update splits exactly into companion and hard parts (m = m^c + m^h by linearity).
+        # m^c stays in pinned CPU memory and streams through the GPU in chunks after the backward
+        # passes: training already peaks near 39 of 44 GiB on an L40S, so 3.2 GiB more is unsafe.
+        self.track_update = True
+        self.track_error = None
+        self.comp_m = None
+        self.comp_m_reset = False
 
     # ---- log-probabilities ---------------------------------------------------------------------
     def _ctx(self):
@@ -239,7 +248,6 @@ class Trainer:
             s = {k: float(v) for k, v in s.items()}
             r = cosines({"gg": s["uu"], "ggc": s["uuc"], "gcgc": s["ucuc"], "gd": s["ud"], "gcd": s["ucd"], "dd": s["dd"]})
             diag["adam"] = {k: r[k] for k in ("cos_comp_H", "cos_hard_H", "cos_comp_hard", "cos_total_H")}
-        del g_c
         if hs["attempts"] == 0:
             # No hard signal: g_h is exactly 0. g - bf16(g_c) would leave rounding noise (~0.3% of
             # |g_c|), so report zero and no hard cosines rather than noise.
@@ -249,11 +257,111 @@ class Trainer:
             if diag["adam"]:
                 diag["adam"].update(cos_hard_H=None, cos_comp_hard=None)
 
-        diag["grad_norm_preclip"] = float(torch.nn.utils.clip_grad_norm_(self.params, 1.0))
+        norm = float(torch.nn.utils.clip_grad_norm_(self.params, 1.0))
+        diag["grad_norm_preclip"] = norm
+        if self.track_update:
+            try:
+                diag["update"] = self._update_terms(g_c, min(1.0, 1.0 / (norm + 1e-6)), d, tot, hs["attempts"] > 0)
+            except Exception as e:   # diagnostics only read the training state; never kill training
+                self.track_update, self.track_error, self.comp_m = False, repr(e), None
+                diag["update"] = {"error": repr(e)}
+                print(f"!! update tracking failed and is now off: {e!r}", flush=True)
+                if self.device == "cuda":
+                    torch.cuda.empty_cache()
+        del g_c
         self.opt.step()
         self.opt.zero_grad(set_to_none=True)
         diag["seconds"] = round(time.time() - t0, 2)
         return diag
+
+    def _update_terms(self, g_c, coef, d, tot, hard_signal) -> dict:
+        """The actual AdamW update of this step and its parts, computed from the clipped gradient and
+        the optimizer state before the step (owner 2026-11-16, A8):
+            m_t = b1 m + (1-b1) g,  v_t = b2 v + (1-b2) g^2,
+            Delta = -lr (m_t / bc1) / (sqrt(v_t / bc2) + eps) = -lr P_t m_t / bc1   (weight decay 0),
+        which is exactly the step opt.step() then applies. With the running companion momentum
+        m^c_t = b1 m^c + (1-b1) coef g_c: Delta = Delta_c + Delta_h, Delta_c = -lr P_t m^c_t / bc1;
+        Delta_c_fresh uses this step's companion gradient only. First-order effects use d_H (ascent
+        of the hard-solution log-likelihood objective): d_H^T Delta. a_h = -(m_t - m^c_t)/bc1 is the
+        hard part of the momentum (an EMA of the hard reward-ascent direction); a_h^T Delta_c is the
+        companion update's first-order effect along it. sgd_* are the same effects for a plain SGD
+        step of the same lr (-lr coef d^T g)."""
+        torch = self.torch
+        grp = self.opt.param_groups[0]
+        lr, (b1, b2), eps = grp["lr"], grp["betas"], grp["eps"]
+        st0 = self.opt.state.get(self.params[0], {})
+        t = (float(st0["step"]) if "step" in st0 else 0.0) + 1
+        bc1, bc2 = 1 - b1 ** t, 1 - b2 ** t
+        if g_c is not None and self.comp_m is None:
+            self.comp_m = [self._pin(torch.zeros(p.shape, dtype=torch.bfloat16)) for p in self.params]
+        dev = self.params[0].device
+        z = lambda: torch.zeros((), dtype=torch.float64, device=dev)
+        KEYS = ("du", "duc", "ducf", "uu", "ucuc", "uhuh", "ucuh", "ahuc", "ahah", "dd")
+        S = {k: z() for k in KEYS}
+        lay = {}
+        none = [None] * len(self.params)
+        dot = lambda a, b: torch.dot(a, b).double()
+        with torch.no_grad():
+            for L, p, gc, mc, dd in zip(self.layers, self.params, g_c or none, self.comp_m or none, d or none):
+                stp = self.opt.state.get(p, {})
+                flat = lambda x: x.reshape(-1) if x is not None else None
+                G, GC, MC, M0, V0, D = (flat(x) for x in (p.grad, gc, mc, stp.get("exp_avg"), stp.get("exp_avg_sq"), dd))
+                la = lay.setdefault(L, [z(), z()])
+                for s0 in range(0, G.numel(), CHUNK_ELEMS):
+                    sl = slice(s0, s0 + CHUNK_ELEMS)
+                    g = G[sl].float()
+                    m = (M0[sl].float() * b1 if M0 is not None else 0.0) + (1 - b1) * g
+                    v = (V0[sl].float() * b2 if V0 is not None else 0.0) + (1 - b2) * g * g
+                    den = (v / bc2).sqrt_().add_(eps)
+                    u = -lr * (m / bc1) / den
+                    uc = ucf = mcf = None
+                    if MC is not None:
+                        mcf = MC[sl].to(dev).float() * b1
+                        if GC is not None:
+                            gcf = GC[sl].float() * coef
+                            mcf = mcf + (1 - b1) * gcf
+                            ucf = -lr * ((1 - b1) * gcf / bc1) / den
+                        MC[sl].copy_(mcf)
+                        uc = -lr * (mcf / bc1) / den
+                    uh = u - uc if uc is not None else u
+                    ah = -(m - mcf) / bc1 if mcf is not None else -m / bc1
+                    S["uu"] += dot(u, u)
+                    S["uhuh"] += dot(uh, uh)
+                    S["ahah"] += dot(ah, ah)
+                    if uc is not None:
+                        S["ucuc"] += dot(uc, uc)
+                        S["ucuh"] += dot(uc, uh)
+                        S["ahuc"] += dot(ah, uc)
+                    if D is not None:
+                        df = D[sl].float()
+                        S["dd"] += dot(df, df)
+                        S["du"] += dot(df, u)
+                        la[1] += dot(df, uh)
+                        if uc is not None:
+                            S["duc"] += dot(df, uc)
+                            la[0] += dot(df, uc)
+                        if ucf is not None:
+                            S["ducf"] += dot(df, ucf)
+        S = {k: float(v) for k, v in S.items()}
+        cos = lambda num, a, b: num / math.sqrt(a * b) if a > 0 and b > 0 else None
+        has_c = self.comp_m is not None
+        out = {"t": t, "clip_coef": coef, "lr": lr,
+               "d_dot_u": S["du"], "d_dot_u_comp": S["duc"] if has_c else None,
+               "d_dot_u_comp_fresh": S["ducf"] if g_c is not None else None,
+               "d_dot_u_hard": S["du"] - S["duc"],
+               "norm_u": math.sqrt(S["uu"]), "norm_u_comp": math.sqrt(S["ucuc"]), "norm_u_hard": math.sqrt(S["uhuh"]),
+               "cos_u_H": cos(S["du"], S["uu"], S["dd"]),
+               "cos_u_comp_H": cos(S["duc"], S["ucuc"], S["dd"]) if has_c else None,
+               "cos_u_hard_H": cos(S["du"] - S["duc"], S["uhuh"], S["dd"]),
+               "cos_u_comp_hard": cos(S["ucuh"], S["ucuc"], S["uhuh"]) if has_c else None,
+               "ahard_dot_u_comp": S["ahuc"] if has_c else None,
+               "cos_u_comp_ahard": cos(S["ahuc"], S["ucuc"], S["ahah"]) if has_c else None,
+               "sgd_d_dot_comp": -lr * coef * tot["gcd"] if g_c is not None else None,
+               "sgd_d_dot_hard": -lr * coef * (tot["gd"] - tot["gcd"]) if hard_signal else 0.0,
+               "per_layer": {L: [float(a) if has_c else None, float(b)] for L, (a, b) in sorted(lay.items())},
+               "comp_m_reset": self.comp_m_reset}
+        self.comp_m_reset = False
+        return out
 
     # ---- hard direction and likelihood --------------------------------------------------------
     def hard_direction(self, sols: dict, round_: int):
@@ -261,13 +369,20 @@ class Trainer:
         torch = self.torch
         self.opt.zero_grad(set_to_none=True)
         n = len(sols)
+        obj = 0.0
         for hid, seqs in sols.items():
             for p, c in seqs:
                 lp = self.token_logps(p, c, grad=True)
-                (-(lp.mean()) / (n * len(seqs))).backward()   # descent on -likelihood
+                term = lp.mean() / (n * len(seqs))
+                (-term).backward()   # descent on -likelihood
+                obj += float(term.detach())
+        self.lik_dir = obj   # the objective whose ascent gradient is d_H, at the weights d_H was taken
         self.d_H = [(-p.grad).detach().to(torch.bfloat16).clone() if p.grad is not None else None for p in self.params]
         self.opt.zero_grad(set_to_none=True)
         self.d_H_round = round_
+
+    def _pin(self, x):
+        return x.pin_memory() if self.device == "cuda" else x
 
     def offload_direction(self, to_cpu: bool):
         if self.d_H is not None:
@@ -295,18 +410,19 @@ class Trainer:
         sd = self.opt.state_dict()
         opt = {"state": {k: {kk: cp(vv) for kk, vv in st.items()} for k, st in sd["state"].items()},
                "param_groups": [dict(g) for g in sd["param_groups"]]}
-        return {"model": {k: cp(v) for k, v in self.model.state_dict().items()}, "opt": opt}
+        comp = [x.detach().to("cpu", copy=True) for x in self.comp_m] if self.comp_m is not None else None
+        return {"model": {k: cp(v) for k, v in self.model.state_dict().items()}, "opt": opt, "comp_m": comp}
 
     def save_snapshot(self, snap: dict, path: str, meta: dict):
         tmp = path + ".tmp"
-        self.torch.save({"model": snap["model"], "opt": snap["opt"], "meta": meta}, tmp)
+        self.torch.save({"model": snap["model"], "opt": snap["opt"], "comp_m": snap.get("comp_m"), "meta": meta}, tmp)
         os.replace(tmp, path)
 
     def save(self, path: str, meta: dict):
         """Atomic: write path + '.tmp', then rename over path."""
         torch = self.torch
         tmp = path + ".tmp"
-        torch.save({"model": self.model.state_dict(), "opt": self.opt.state_dict(), "meta": meta}, tmp)
+        torch.save({"model": self.model.state_dict(), "opt": self.opt.state_dict(), "comp_m": self.comp_m, "meta": meta}, tmp)
         os.replace(tmp, path)
 
     def load(self, path: str) -> dict:
@@ -314,6 +430,12 @@ class Trainer:
         ck = torch.load(path, map_location="cpu", weights_only=False)  # no second GPU copy
         self.model.load_state_dict(ck["model"])
         self.opt.load_state_dict(ck["opt"])
+        cm = ck.get("comp_m")
+        if cm is not None:
+            self.comp_m = [self._pin(x) for x in cm]
+        elif self.track_update and ck["meta"].get("round", 0) > 0:
+            # a checkpoint from before update tracking: the companion momentum restarts from zero
+            self.comp_m, self.comp_m_reset = None, True
         return ck["meta"]
 
     def save_bf16(self, path: str):
